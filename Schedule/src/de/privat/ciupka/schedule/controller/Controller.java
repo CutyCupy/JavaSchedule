@@ -2,16 +2,16 @@ package de.privat.ciupka.schedule.controller;
 
 import java.util.ArrayList;
 
+import de.privat.ciupka.schedule.gui.schedule.SubjectLabel;
 import de.privat.ciupka.schedule.logic.schedule.PropertieHandler;
 import de.privat.ciupka.schedule.logic.schedule.Subject;
-import de.privat.ciupka.schedule.logic.schedule.SubjectHandler;
+import de.privat.ciupka.schedule.logic.schedule.Time;
 
 public class Controller {
 	
 	private static Controller instance;
 	
 	private GUIController guiCon;
-	private SubjectHandler subjectHandler;
 	private PropertieHandler propertieHandler;
 	
 	private Controller() {}
@@ -26,13 +26,12 @@ public class Controller {
 	
 	public void start() {
 		guiCon = GUIController.getInstance();
-		subjectHandler = new SubjectHandler();
 		propertieHandler = PropertieHandler.getInstance();
 		loadAllSubjects();
 	}
 	
 	public void loadAllSubjects() {
-		subjectHandler.addSubjects(propertieHandler.loadSubjects());
+		propertieHandler.loadSubjects();
 	}
 	
 	public void editOrAddSubject(Subject subject) {
@@ -54,6 +53,20 @@ public class Controller {
 		propertieHandler.editSubject(subject);
 	}
 	
+	public void exportToPNG(String[] days, Time[] times, ArrayList<SubjectLabel> subjects, String Path) {
+		//TODO: Writing a logic function that exports the current schedule as PNG image.
+	}
 	
+	public void exportToJPG(String[] days, Time[] times, ArrayList<SubjectLabel> subjects, String Path) {
+		//TODO: Writing a logic function that exports the current schedule as JPG image.
+	}
+	
+	public void exportToPDF(String[] days, Time[] times, ArrayList<SubjectLabel> subjects, String Path) {
+		//TODO: Writing a logic function that exports the current schedule as PDF file.
+	}
+	
+	public void exportToXLS(String[] days, Time[] times, ArrayList<SubjectLabel> subjects, String Path) {
+		//TODO: Writing a logic function that exports the current schedule as XLS (Excel) file (maybe).
+	}
 
 }

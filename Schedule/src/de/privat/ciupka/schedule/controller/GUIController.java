@@ -10,6 +10,7 @@ import de.privat.ciupka.schedule.gui.popups.ErrorMessages;
 import de.privat.ciupka.schedule.gui.schedule.CreateSchedule;
 import de.privat.ciupka.schedule.gui.schedule.Schedule;
 import de.privat.ciupka.schedule.gui.schedule.SchedulePanel;
+import de.privat.ciupka.schedule.gui.subjects.ManageSubjects;
 import de.privat.ciupka.schedule.logic.schedule.Time;
 
 public class GUIController {
@@ -22,6 +23,7 @@ public class GUIController {
 	private CreateSchedule createSchedule;
 	private Schedule schedule;
 	private SchedulePanel schedulePanel;
+	private ManageSubjects manageSubjects;
 	
 	private GUIController() {}
 	
@@ -39,6 +41,7 @@ public class GUIController {
 		createSchedule = new CreateSchedule();
 		schedule = new Schedule();
 		schedulePanel = new SchedulePanel();
+		manageSubjects = new ManageSubjects();
 		mainFrame.updateContentPane(createSchedule.display());
 	}
 	
@@ -123,22 +126,6 @@ public class GUIController {
 		//TODO: Ask if sure and go back to main menu
 	}
 	
-	public void exportToPNG() {
-		//TODO: Writing a logic function that exports the current schedule as PNG image.
-	}
-	
-	public void exportToJPG() {
-		//TODO: Writing a logic function that exports the current schedule as JPG image.
-	}
-	
-	public void exportToPDF() {
-		//TODO: Writing a logic function that exports the current schedule as PDF file.
-	}
-	
-	public void exportToXLS() {
-		//TODO: Writing a logic function that exports the current schedule as XLS (Excel) file (maybe).
-	}
-	
 	public void displayPanel(JPanel panel) {
 		mainFrame.updateContentPane(panel);
 	}
@@ -157,5 +144,17 @@ public class GUIController {
 	
 	public MainFrame getMainFrame() {
 		return mainFrame;
+	}
+
+	public void export(String fileType) {
+		//TODO: Check for name and call right controller export function.
+	}
+
+	public ManageSubjects getManageSubjects() {
+		return manageSubjects;
+	}
+
+	public void swapRemoveCursor() {
+		schedule.swapRemove();
 	}
 }

@@ -1,6 +1,7 @@
 package de.privat.ciupka.schedule.gui.schedule;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class Schedule extends JComponent {
 	private int labelHeight;
 	private int labelWidth;
 	private boolean editable;
+	private boolean remove;
 	
 	
 	public Schedule(int width, int height) {
@@ -166,7 +168,7 @@ public class Schedule extends JComponent {
 		System.out.println(startY);
 		System.out.println(labelWidth);
 		System.out.println(endY-startY);
-		SubjectLabel newLabel = new SubjectLabel(subject, start, end);
+		SubjectLabel newLabel = new SubjectLabel(subject, start, end, "001");
 		newLabel.setBounds(labelWidth*(days.indexOf(day)+1), startY, labelWidth, (endY - startY));
 newLabel.addMouseListener(new MouseListener() {
 			
@@ -199,7 +201,11 @@ newLabel.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(editable) {
-					
+					if(remove) {
+						//TODO: Remove source.
+					} else {
+						//TODO: Open edit subject thing.s
+					}
 				}
 			}
 		});
@@ -220,4 +226,19 @@ newLabel.addMouseListener(new MouseListener() {
 		this.subjects = new ArrayList<JLabel>();
 		this.times = new ArrayList<Time>();
 	}
+	
+	public boolean isRemove() {
+		return remove;
+	}
+	
+	public void swapRemove() {
+		remove = !remove;
+		if(remove) {
+			this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		} else {
+			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		}
+	}
+	
+	
 }
