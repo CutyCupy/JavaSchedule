@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 
+import de.privat.ciupka.schedule.controller.Controller;
 import de.privat.ciupka.schedule.controller.GUIController;
 
 public class SchedulePanel extends JPanel {
@@ -77,6 +78,7 @@ public class SchedulePanel extends JPanel {
 		this.openAction = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("open");
 				guiCon.openNewSchedule();
 			}
 		};
@@ -127,27 +129,41 @@ public class SchedulePanel extends JPanel {
 		manage.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				guiCon.displayPanel(guiCon.getManageSubjects().display());
+				guiCon.displayPanel(guiCon.getManageSubjects().displaySubjects(Controller.getInstance().loadAllSubjects()));
 			}
 		});
 		
+		file.add(open);
+		file.add(save);
+		file.addSeparator();
+		file.add(export);
+		file.addSeparator();
+		file.add(back);
 		
+		export.add(exportJPG);
+		export.add(exportPNG);
+		export.add(exportPDF);
+		export.add(exportXLS);
+		
+		subjects.add(add);
+		subjects.add(remove);
+		subjects.addSeparator();
+		subjects.add(manage);
 		
 		
 		menubar.add(file);
 		menubar.add(subjects);
-		
-		addKeyMaps();
 		this.guiCon.getMainFrame().updateMenu(menubar);
+		addKeyMaps();
 	}
 	
 	private void addKeyMaps() {
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("+"), "add");
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("a"), "add");
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("A"), "add");
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("-"), "remove");
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("r"), "remove");
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("o"), "open");
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("s"), "save");
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("R"), "remove");
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("O"), "open");
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("S"), "save");
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "return");
 		
 		
@@ -156,11 +172,10 @@ public class SchedulePanel extends JPanel {
 		this.getActionMap().put("open", this.openAction);
 		this.getActionMap().put("save", this.saveAction);
 		this.getActionMap().put("return", this.returnBackAction);
-		
 	}
 
 	public void setSchedule(Schedule schedule) {
-		setSize(schedule.getSize());
+		setSize(schedule.getSize().width + 15, schedule.getSize().height + 20);
 		add(schedule);
 	}
 }

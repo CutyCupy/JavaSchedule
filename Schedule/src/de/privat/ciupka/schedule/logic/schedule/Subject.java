@@ -19,7 +19,7 @@ public class Subject {
 	
 	
 	public void save() {
-		controller.saveSubject(this);
+		controller.addSubject(this);
 	}
 	
 	public void setName(String name) {

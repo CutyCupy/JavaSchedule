@@ -312,27 +312,21 @@ public class CreateSchedule extends JPanel {
 	}
 	
 	public String checkInput(int min, int max, String lastInput, KeyEvent e) {
-		boolean error = false;
 		String newLastInput = lastInput;
 		try {
 			Integer.parseInt(String.valueOf(e.getKeyChar()));
 			int value = Integer.parseInt(((JTextField) e.getSource()).getText());
 			if(value < min || value > max) {
 				newLastInput = value < min ? String.valueOf(min) : String.valueOf(max);
-				error = true;
 			} else {
 				newLastInput = String.valueOf(value);
 			}
 		} catch(Exception exc) {
-			if(e.getKeyCode() != KeyEvent.VK_BACK_SPACE) {
-				error = true;						
+			if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+				newLastInput = ((JTextField) e.getSource()).getText();						
 			}
 		}
-		if(!error) {
-			return ((JTextField) e.getSource()).getText();
-		} else {
-			return newLastInput;
-		}
+		return newLastInput;
 	}
 	
 	private void focusHints() {

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import de.privat.ciupka.schedule.controller.GUIController;
 import de.privat.ciupka.schedule.logic.schedule.Subject;
 import de.privat.ciupka.schedule.logic.schedule.Time;
 
@@ -17,11 +18,23 @@ public class SubjectLabel extends JLabel {
 	
 	public SubjectLabel(Subject subject, Time start, Time end, String room) {
 		super();
+		this.subject = subject;
 		this.setText(convertToMultiline(subject.getName() + "\n" + subject.getShortName() + "\n" + subject.getTeacher() + "\n" + room, true));
 		this.setBackground(subject.getColor());
+		this.setForeground(GUIController.getForegroundColor(subject.getColor().getRed(), subject.getColor().getGreen(), subject.getColor().getBlue()));
 		this.start = start;
 		this.end = end;
 		this.room = room;
+		this.setHorizontalAlignment(SwingConstants.CENTER);
+		this.setVerticalAlignment(SwingConstants.CENTER);
+		setOpaque(true);
+	}
+	
+	public SubjectLabel(Subject subject) {
+		super();
+		this.setText(convertToMultiline(subject.getName() + "\n" + subject.getShortName() + "\n" + subject.getTeacher(), true));
+		this.setBackground(subject.getColor());
+		this.setForeground(GUIController.getForegroundColor(subject.getColor().getRed(), subject.getColor().getGreen(), subject.getColor().getBlue()));
 		this.setHorizontalAlignment(SwingConstants.CENTER);
 		this.setVerticalAlignment(SwingConstants.CENTER);
 		setOpaque(true);
@@ -42,6 +55,10 @@ public class SubjectLabel extends JLabel {
 		data.put("end", String.valueOf(end.getTime()));
 		data.put("subjectname", subject.getName());
 		return data;
+	}
+
+	public Subject getSubject() {
+		return subject;
 	}
 	
 	

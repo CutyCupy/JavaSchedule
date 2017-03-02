@@ -126,30 +126,20 @@ public class Schedule extends JComponent {
 		int startTime = start.getTime();
 		int endTime = end.getTime();
 		if(startTime >= endTime || startTime < times.get(0).getTime() || endTime > times.get(times.size() - 1).getTime()) {
-			System.err.println("ERROR 1");
 			return false;
 		}
 		int startY = 0;
 		int endY = 0;
 		int startIndex = -1;
-		System.out.println(startTime);
 		for(int i = 0; i < times.size(); i++) {
-			System.out.println(times.get(i).getTime() + " - " + startTime);
 			if(times.get(i).getTime() >= startTime) {
-				System.out.println("Hi");
 				startIndex = i;
 				if(i != 0) {
 					int delta = times.get(i).getTime() - times.get(i - 1).getTime();
-					System.out.println("Delta" + delta);
 					float percentage = (float) (((startTime - times.get(i - 1).getTime())*1.0) / delta);
-					System.out.println("p=" + percentage);
-					System.out.println("p*lH" + percentage*labelHeight);
-					System.out.println("i*labelHeight" + i*labelHeight);
 					startY = (int) (i * labelHeight + percentage*labelHeight);
-					System.out.println(startY);
 					break;
 				} else if(times.get(i).getTime() != startTime) {
-					System.err.println("ERROR 2");
 					return false;
 				}
 			}
@@ -162,12 +152,6 @@ public class Schedule extends JComponent {
 				break;
 			}
 		}
-		System.out.println(endY + " - " + startY);
-		System.out.println("DEBUG Start");
-		System.out.println(labelWidth*(days.indexOf(day)+1));
-		System.out.println(startY);
-		System.out.println(labelWidth);
-		System.out.println(endY-startY);
 		SubjectLabel newLabel = new SubjectLabel(subject, start, end, "001");
 		newLabel.setBounds(labelWidth*(days.indexOf(day)+1), startY, labelWidth, (endY - startY));
 newLabel.addMouseListener(new MouseListener() {

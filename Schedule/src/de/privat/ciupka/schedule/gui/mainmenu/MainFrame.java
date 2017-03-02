@@ -1,5 +1,7 @@
 package de.privat.ciupka.schedule.gui.mainmenu;
 
+import java.awt.Container;
+
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
@@ -12,17 +14,18 @@ public class MainFrame extends JFrame {
 		setVisible(true);
 	}
 	
-	public void updateContentPane(JPanel contentPane) {
-		System.out.println(contentPane.getSize());
+	public void updateContentPane(Container contentPane) {
 		setContentPane(contentPane);
 		setSize(contentPane.getWidth() + 16,contentPane.getHeight() + 41);
 		setLocation(WindowHandler.placeFrameToMiddle(getHeight(), getWidth()));
-		System.out.println(getSize());
 		repaint();
 	}
 	
 	public void updateMenu(JMenuBar newMenu) {
 		this.setJMenuBar(newMenu);
+//		if(newMenu != null) {
+//			this.setSize((int) this.getSize().getWidth(), (int) this.getSize().getHeight() + 10);
+//		}
 	}
 	
 	public static void main(String[] args) {

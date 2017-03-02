@@ -63,16 +63,21 @@ public class PropertieHandler {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-			
 		}
 		return subject;
 	}
 	
-	public void editSubject(Subject subject) {
+	public void addSubject(Subject subject) {
 		String shortName = subject.getShortName();
 		subjectNames.put(subject.getName(), shortName);
-		subjects.put(shortName + "_color", subject.getColor().getRGB());
+		subjects.put(shortName + "_color", String.valueOf(subject.getColor().getRGB()));
 		subjects.put(shortName + "_teacher", subject.getTeacher());
+		saveSubjects();
+	}
+	
+	public void editSubject(Subject oldSubject, Subject newSubject) {
+		removeSubject(oldSubject);
+		addSubject(newSubject);
 	}
 	
 	public void saveSubjects() {
@@ -88,6 +93,7 @@ public class PropertieHandler {
 	
 	public Subject readAndCreateSubject(String name) {
 		String shortName = subjectNames.getProperty(name);
+		System.out.println("SHORTNAME: " + shortName);
 		Subject newSubject = null;
 		if(shortName != null) {
 			newSubject = new Subject();
@@ -101,6 +107,8 @@ public class PropertieHandler {
 			newSubject.setShortName(shortName);
 			newSubject.setTeacher(subjects.getProperty(shortName + "_teacher", ""));
 			newSubject.setColor(new Color(rgb));
+			System.out.println(newSubject.getColor().getRGB() + " - " + rgb);
+			System.out.println(Color.BLACK.getRGB());
 		}
 		return newSubject;
 	}
@@ -114,5 +122,11 @@ public class PropertieHandler {
 			}
 		}
 		return result;
+	}
+
+	public void removeSubject(Subject subject) {
+		subjectNames.remove(subject.getName());
+		subjects.remove(subject.getShortName() + "_teacher");
+		subjects.remove(subject.getShortName() + "_color");
 	}
 }

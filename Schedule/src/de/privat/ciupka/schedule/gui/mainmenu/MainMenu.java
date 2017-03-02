@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import de.privat.ciupka.schedule.controller.Controller;
 import de.privat.ciupka.schedule.controller.GUIController;
 
 import java.awt.Color;
@@ -35,6 +36,7 @@ public class MainMenu extends JPanel {
 			createItems();
 			showed = true;
 		}
+		guiCon.getMainFrame().updateMenu(null);
 		return this;
 	}
 	
@@ -61,7 +63,7 @@ public class MainMenu extends JPanel {
 		JButton subjectsB = new JButton("Manage Subjects");
 		subjectsB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO: Add subjectsB ActionListener
+				guiCon.displayPanel(guiCon.getManageSubjects().displaySubjects(Controller.getInstance().loadAllSubjects()));
 			}
 		});
 		subjectsB.setSize(150, 25);

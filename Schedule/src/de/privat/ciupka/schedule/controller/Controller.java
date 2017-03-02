@@ -1,5 +1,6 @@
 package de.privat.ciupka.schedule.controller;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import de.privat.ciupka.schedule.gui.schedule.SubjectLabel;
@@ -30,27 +31,29 @@ public class Controller {
 		loadAllSubjects();
 	}
 	
-	public void loadAllSubjects() {
-		propertieHandler.loadSubjects();
+	public ArrayList<Subject> loadAllSubjects() {
+		return propertieHandler.loadSubjects();
 	}
 	
-	public void editOrAddSubject(Subject subject) {
-		propertieHandler.editSubject(subject);
+	public void addSubject(Subject subject) {
+		System.out.println(subject.getColor().getRGB());
+		System.out.println(Color.BLACK.getRGB());
+		propertieHandler.addSubject(subject);
+	}
+	
+	public void editSubject(Subject oldSubject, Subject newSubject) {
+		propertieHandler.editSubject(oldSubject, newSubject);
 	}
 	
 	public void saveAllSubjects(ArrayList<Subject> subjects) {
 		for (Subject subject : subjects) {
-			propertieHandler.editSubject(subject);
+			propertieHandler.addSubject(subject);
 		}
 		saveSubjects();
 	}
 	
 	public void saveSubjects() {
 		propertieHandler.saveSubjects();
-	}
-
-	public void saveSubject(Subject subject) {
-		propertieHandler.editSubject(subject);
 	}
 	
 	public void exportToPNG(String[] days, Time[] times, ArrayList<SubjectLabel> subjects, String Path) {
@@ -69,4 +72,7 @@ public class Controller {
 		//TODO: Writing a logic function that exports the current schedule as XLS (Excel) file (maybe).
 	}
 
+	public void removeSubject(Subject subject) {
+		propertieHandler.removeSubject(subject);
+	}
 }
