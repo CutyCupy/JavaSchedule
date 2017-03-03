@@ -22,7 +22,7 @@ public class Schedule extends JComponent {
 	
 	private ArrayList<Time> times;
 	private ArrayList<String> days;
-	private ArrayList<JLabel> subjects;
+	private ArrayList<SubjectLabel> subjects;
 	
 	private int labelHeight;
 	private int labelWidth;
@@ -33,14 +33,14 @@ public class Schedule extends JComponent {
 	public Schedule(int width, int height) {
 		this.times = new ArrayList<Time>();
 		this.days = new ArrayList<String>();
-		this.subjects = new ArrayList<JLabel>();
+		this.subjects = new ArrayList<SubjectLabel>();
 		this.setSize(width, height);
 	}
 	
 	public Schedule() {
 		this.times = new ArrayList<Time>();
 		this.days = new ArrayList<String>();
-		this.subjects = new ArrayList<JLabel>();
+		this.subjects = new ArrayList<SubjectLabel>();
 	}
 	
 	public void setTimes(Time[] newTimes) {
@@ -89,8 +89,6 @@ public class Schedule extends JComponent {
 	
 	public Schedule generateSchedule() {
 		refreshSize();
-		System.out.println(days.size());
-		System.out.println(times.size());
 		for(int i = -1; i < days.size(); i++) {
 			JLabel currentLabel = new JLabel();
 			currentLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -186,7 +184,7 @@ newLabel.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				if(editable) {
 					if(remove) {
-						//TODO: Remove source.
+						subjects.remove((SubjectLabel) e.getSource());
 					} else {
 						//TODO: Open edit subject thing.s
 					}
@@ -207,7 +205,7 @@ newLabel.addMouseListener(new MouseListener() {
 	
 	public void reset() {
 		this.days = new ArrayList<String>();
-		this.subjects = new ArrayList<JLabel>();
+		this.subjects = new ArrayList<SubjectLabel>();
 		this.times = new ArrayList<Time>();
 	}
 	
