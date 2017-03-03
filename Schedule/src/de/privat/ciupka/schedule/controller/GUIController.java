@@ -2,6 +2,7 @@ package de.privat.ciupka.schedule.controller;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 import javax.swing.JPanel;
@@ -13,9 +14,11 @@ import de.privat.ciupka.schedule.gui.popups.Messages;
 import de.privat.ciupka.schedule.gui.schedule.CreateSchedule;
 import de.privat.ciupka.schedule.gui.schedule.Schedule;
 import de.privat.ciupka.schedule.gui.schedule.SchedulePanel;
+import de.privat.ciupka.schedule.gui.schedule.ScheduleSubjectEditor;
 import de.privat.ciupka.schedule.gui.schedule.SubjectLabel;
 import de.privat.ciupka.schedule.gui.subjects.AddOrEditSubject;
 import de.privat.ciupka.schedule.gui.subjects.ManageSubjects;
+import de.privat.ciupka.schedule.logic.schedule.PropertieHandler;
 import de.privat.ciupka.schedule.logic.schedule.Subject;
 import de.privat.ciupka.schedule.logic.schedule.Time;
 
@@ -24,6 +27,7 @@ public class GUIController {
 	private static GUIController instance;
 
 	private MainFrame mainFrame;
+	private Controller controller;
 
 	private MainMenu mainMenu;
 	private CreateSchedule createSchedule;
@@ -31,9 +35,9 @@ public class GUIController {
 	private SchedulePanel schedulePanel;
 	private ManageSubjects manageSubjects;
 	private AddOrEditSubject addSubject;
+	private ScheduleSubjectEditor addSubjectToSchedule;
 
-	private GUIController() {
-	}
+	private GUIController() {}
 
 	public static GUIController getInstance() {
 		if (instance == null) {
@@ -44,6 +48,7 @@ public class GUIController {
 	}
 
 	public void start() {
+		controller = Controller.getInstance();
 		mainFrame = new MainFrame();
 		mainMenu = new MainMenu();
 		createSchedule = new CreateSchedule();
@@ -51,6 +56,7 @@ public class GUIController {
 		schedulePanel = new SchedulePanel();
 		manageSubjects = new ManageSubjects();
 		addSubject = new AddOrEditSubject();
+		addSubjectToSchedule = new ScheduleSubjectEditor();
 		mainFrame.updateContentPane(mainMenu.display());
 	}
 
@@ -110,6 +116,7 @@ public class GUIController {
 			});
 			schedulePanel.setSchedule(schedule.generateSchedule(w, h));
 			displayPanel(schedulePanel.display());
+			schedule.setEditable(editable);
 		} catch (Exception e) {
 			ErrorMessages.createErrorMessage("Creating Schedule",
 					"An error occured while creating your Schedule - please check your data!");
@@ -117,7 +124,7 @@ public class GUIController {
 	}
 
 	public void displayAddSubjectToSchedule() {
-		// TODO: Writing a pop-up for this function
+		this.addSubjectToSchedule.display();
 	}
 
 	public void restartSchedule() {
@@ -180,8 +187,6 @@ public class GUIController {
 		newSubject.setShortName(shortName);
 		newSubject.setTeacher(teacher);
 		newSubject.setColor(color);
-		System.out.println(color.getRGB());
-		System.out.println(Color.BLACK.getRGB());
 		Controller.getInstance().addSubject(newSubject);
 	}
 
@@ -202,5 +207,22 @@ public class GUIController {
 	public static Color getForegroundColor(int red, int green, int blue) {
 		return (0.2126*red + 0.7152*green + 0.0722*blue) / 255 > 0.5 ? Color.BLACK : Color.WHITE;
 	}
-		
+
+	public void addSubjectToSchedule(String startMinute, String startHour, String endMinute, String endHour, String room, String subjectName, String day) {
+		try {
+			Time start = new Time();
+			Time end = new Time();
+			start.setTime(Integer.parseInt(startHour), Integer.parseInt(startMinute));
+			end.setTime(Integer.parseInt(endHour), Integer.parseInt(endMinute));
+			schedule.addSubjectLabelBounds(controller.getPropertieHandler().getSubjectByName(subjectName), start, end, day, room);
+			schedule.generateSchedule();
+			this.addSubjectToSchedule.setVisible(false);
+		} catch(Exception e) {
+			ErrorMessages.createErrorMessage("Add Subject error!", "Please enter a valid Time for the subject.");
+		}
+	}
+	
+	public ArrayList<String> getScheduleDays() {
+		return schedule.getDays();
+	}
 }

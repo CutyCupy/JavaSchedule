@@ -53,5 +53,4 @@ public class Subject {
 	public Color getColor() {
 		return color;
 	}
-
 }

@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JMenuBar;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 
 import de.privat.ciupka.schedule.logic.schedule.Subject;
 import de.privat.ciupka.schedule.logic.schedule.Time;
@@ -120,7 +119,7 @@ public class Schedule extends JComponent {
 		return this;
 	}
 	
-	public boolean addSubjectLabelBounds(Subject subject, Time start, Time end, String day) {
+	public boolean addSubjectLabelBounds(Subject subject, Time start, Time end, String day, String room) {
 		int startTime = start.getTime();
 		int endTime = end.getTime();
 		if(startTime >= endTime || startTime < times.get(0).getTime() || endTime > times.get(times.size() - 1).getTime()) {
@@ -150,9 +149,9 @@ public class Schedule extends JComponent {
 				break;
 			}
 		}
-		SubjectLabel newLabel = new SubjectLabel(subject, start, end, "001");
+		SubjectLabel newLabel = new SubjectLabel(subject, start, end, room);
 		newLabel.setBounds(labelWidth*(days.indexOf(day)+1), startY, labelWidth, (endY - startY));
-newLabel.addMouseListener(new MouseListener() {
+		newLabel.addMouseListener(new MouseListener() {
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -185,13 +184,12 @@ newLabel.addMouseListener(new MouseListener() {
 				if(editable) {
 					if(remove) {
 						subjects.remove((SubjectLabel) e.getSource());
-					} else {
-						//TODO: Open edit subject thing.s
 					}
 				}
 			}
 		});
 		this.subjects.add(newLabel);
+		this.getParent().repaint();
 		return true;
 	}
 	
@@ -220,6 +218,10 @@ newLabel.addMouseListener(new MouseListener() {
 		} else {
 			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
+	}
+	
+	public ArrayList<String> getDays() {
+		return this.days;
 	}
 	
 	

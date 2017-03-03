@@ -129,4 +129,16 @@ public class PropertieHandler {
 		subjects.remove(subject.getShortName() + "_teacher");
 		subjects.remove(subject.getShortName() + "_color");
 	}
+	
+	public Subject getSubjectByName(String name) {
+		ArrayList<Subject> subjects = loadSubjects();
+		for(Subject subject : subjects) {
+			if(subject.getName().equals(name)) {
+				return subject;
+			}
+		}
+		return null;
+	}
+	
+	public 
 }

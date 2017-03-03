@@ -12,6 +12,7 @@ public class MainFrame extends JFrame {
 	
 	public MainFrame() {
 		setVisible(true);
+		addWindowListener(new MyWindowListener());
 	}
 	
 	public void updateContentPane(Container contentPane) {

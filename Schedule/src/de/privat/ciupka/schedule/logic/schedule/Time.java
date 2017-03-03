@@ -48,8 +48,8 @@ public class Time {
 	
 	@Override
 	public String toString() {
-		String tempHour = hour < 10 ?  0 + String.valueOf(this.hour) : String.valueOf(this.hour);
-		String tempMinute = minute < 10 ?  0 + String.valueOf(this.minute) : String.valueOf(this.minute);
+		String tempHour = hour < 10 ?  "0" + String.valueOf(this.hour) : String.valueOf(this.hour);
+		String tempMinute = minute < 10 ?  "0" + String.valueOf(this.minute) : String.valueOf(this.minute);
 		return tempHour + ":" + tempMinute;
 	}
 }

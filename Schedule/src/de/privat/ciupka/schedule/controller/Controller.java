@@ -75,4 +75,8 @@ public class Controller {
 	public void removeSubject(Subject subject) {
 		propertieHandler.removeSubject(subject);
 	}
+
+	public PropertieHandler getPropertieHandler() {
+		return propertieHandler;
+	}
 }

@@ -78,7 +78,6 @@ public class SchedulePanel extends JPanel {
 		this.openAction = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("open");
 				guiCon.openNewSchedule();
 			}
 		};

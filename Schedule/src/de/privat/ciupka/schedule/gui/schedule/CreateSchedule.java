@@ -326,6 +326,9 @@ public class CreateSchedule extends JPanel {
 				newLastInput = ((JTextField) e.getSource()).getText();						
 			}
 		}
+		if((min == 0 && (max == 23 || max == 59)) && newLastInput.length() == 1) {
+			newLastInput = "0" + newLastInput;
+		}
 		return newLastInput;
 	}
 	
