@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import de.privat.ciupka.schedule.gui.schedule.SubjectLabel;
 import de.privat.ciupka.schedule.logic.schedule.PropertieHandler;
+import de.privat.ciupka.schedule.logic.schedule.ScheduleHandler;
 import de.privat.ciupka.schedule.logic.schedule.Subject;
 import de.privat.ciupka.schedule.logic.schedule.Time;
 
@@ -14,6 +15,7 @@ public class Controller {
 	
 	private GUIController guiCon;
 	private PropertieHandler propertieHandler;
+	private ScheduleHandler scheduleHandler;
 	
 	private Controller() {}
 	
@@ -28,6 +30,7 @@ public class Controller {
 	public void start() {
 		guiCon = GUIController.getInstance();
 		propertieHandler = PropertieHandler.getInstance();
+		scheduleHandler = new ScheduleHandler();
 		loadAllSubjects();
 	}
 	
@@ -78,5 +81,9 @@ public class Controller {
 
 	public PropertieHandler getPropertieHandler() {
 		return propertieHandler;
+	}
+
+	public void saveSchedule() {
+		scheduleHandler.saveSchedule();
 	}
 }

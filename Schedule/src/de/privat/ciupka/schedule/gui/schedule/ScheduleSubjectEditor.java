@@ -66,7 +66,6 @@ public class ScheduleSubjectEditor extends JFrame {
 		focusHints();
 		subjectsCB.removeAllItems();
 		daysCB.removeAllItems();
-		//TODO
 		for(Subject subject : Controller.getInstance().loadAllSubjects()) {
 			subjectsCB.addItem(subject.getName());
 		}
@@ -127,7 +126,7 @@ public class ScheduleSubjectEditor extends JFrame {
 			
 			@Override
 			public void keyReleased(KeyEvent e) {
-				lastStartMinute = checkInput(0, 23, String.valueOf(e.getKeyChar()), e);
+				lastStartMinute = checkInput(0, 59, String.valueOf(e.getKeyChar()), e);
 				((HintTextField) e.getSource()).setText(lastStartMinute);
 			}
 			
@@ -177,7 +176,7 @@ public class ScheduleSubjectEditor extends JFrame {
 			
 			@Override
 			public void keyReleased(KeyEvent e) {
-				lastEndMinute = checkInput(0, 23, String.valueOf(e.getKeyChar()), e);
+				lastEndMinute = checkInput(0, 60, String.valueOf(e.getKeyChar()), e);
 				((HintTextField) e.getSource()).setText(lastEndMinute);
 			}
 			
@@ -222,6 +221,9 @@ public class ScheduleSubjectEditor extends JFrame {
 			if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
 				newLastInput = ((JTextField) e.getSource()).getText();						
 			}
+		}
+		if((min == 0 && (max == 23 || max == 59)) && newLastInput.length() == 1) {
+			newLastInput = "0" + newLastInput;
 		}
 		return newLastInput;
 	}

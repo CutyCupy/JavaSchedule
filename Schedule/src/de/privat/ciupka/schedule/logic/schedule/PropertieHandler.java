@@ -13,7 +13,8 @@ public class PropertieHandler {
 	
 	public static final String HOME = System.getProperty("user.home");
 	public static final String SEPERATOR = System.getProperty("file.separator");
-	public static final String SAVE_PATH = HOME + SEPERATOR + "ciupkaschedule" + SEPERATOR;
+	public static final String SAVE_PATH
+	= HOME + SEPERATOR + "ciupkaschedule" + SEPERATOR;
 	public static final String SUBJECT_PROPERTIES = SAVE_PATH + "subjects.cfg";
 	public static final String SUBJECT_NAMES_PROPERTIES = SAVE_PATH + "subjectnames.cfg";
 	
@@ -139,6 +140,4 @@ public class PropertieHandler {
 		}
 		return null;
 	}
-	
-	public 
 }

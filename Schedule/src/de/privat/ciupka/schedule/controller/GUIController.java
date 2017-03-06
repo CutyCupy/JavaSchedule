@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
 import de.privat.ciupka.schedule.gui.mainmenu.MainFrame;
@@ -19,6 +20,7 @@ import de.privat.ciupka.schedule.gui.schedule.SubjectLabel;
 import de.privat.ciupka.schedule.gui.subjects.AddOrEditSubject;
 import de.privat.ciupka.schedule.gui.subjects.ManageSubjects;
 import de.privat.ciupka.schedule.logic.schedule.PropertieHandler;
+import de.privat.ciupka.schedule.logic.schedule.ScheduleHandler;
 import de.privat.ciupka.schedule.logic.schedule.Subject;
 import de.privat.ciupka.schedule.logic.schedule.Time;
 
@@ -137,8 +139,7 @@ public class GUIController {
 	}
 
 	public void saveSchedule() {
-		// TODO: Writing a logic function that allows the user to save his
-		// current schedule
+		controller.saveSchedule();
 	}
 
 	public void backToMainMenu() {

@@ -61,6 +61,17 @@ public class SubjectLabel extends JLabel {
 		return subject;
 	}
 	
+	public int getStartTime() {
+		if(start == null) {
+			return 0;
+		}
+		return start.getTime();
+	}
 	
-	
+	public int getEndTime() {
+		if(end == null) {
+			return 0;
+		}
+		return end.getTime();
+	}
 }

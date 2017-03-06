@@ -113,7 +113,7 @@ public class Schedule extends JComponent {
 				add(currentLabel);
 			}
 		}
-		for(JLabel subject : this.subjects) {
+		for(SubjectLabel subject : this.subjects) {
 			add(subject);
 		}
 		return this;
@@ -223,6 +223,13 @@ public class Schedule extends JComponent {
 	public ArrayList<String> getDays() {
 		return this.days;
 	}
+
+	public ArrayList<Time> getTimes() {
+		return this.times;
+	}
 	
+	public ArrayList<SubjectLabel> getSubjects() {
+		return this.subjects;
+	}
 	
 }
