@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 
@@ -59,6 +60,7 @@ public class ScheduleHandler {
 				currentSubject.addProperty("name", s.getSubject().getName());
 				currentSubject.addProperty("start", s.getStartTime());
 				currentSubject.addProperty("end", s.getEndTime());
+				currentSubject.addProperty("room", s.getRoom());
 				content.add(currentSubject);
 			}
 			save.add("days", days);
@@ -76,12 +78,13 @@ public class ScheduleHandler {
 	}
 	
 	public void loadSchedule() {
-		//{days: [Day1, Day2, ...], times: [Time1, Time2, ...], size: {width: width, height: height}, content: {day1: {Subject1: {name: name, start: start, end: end}, day2: ...}}}
+		//{days: [Day1, Day2, ...], times: [Time1, Time2, ...], size: {width: width, height: height}, content: {day1: {Subject1: {name: name, start: start, end: end, room: room}, day2: ...}}}
 		JFileChooser chooser = new JFileChooser(DEFAULT_PATH);
 		int result = chooser.showOpenDialog(null);
 		if(result == JFileChooser.APPROVE_OPTION) {
+			JsonObject loaded = null;
 			try {
-				JsonObject loaded = new JsonParser().parse(new FileReader(chooser.getSelectedFile())).getAsJsonObject();
+				loaded = new JsonParser().parse(new FileReader(chooser.getSelectedFile())).getAsJsonObject();
 			} catch (JsonIOException e) {
 				//TODO: Display correct error message dialog
 				e.printStackTrace();
@@ -92,6 +95,33 @@ public class ScheduleHandler {
 				//TODO: Display correct error message dialog
 				e.printStackTrace();
 			}
-		}
+			JsonArray days = loaded.getAsJsonArray("days");
+			JsonArray times = loaded.getAsJsonArray("times");
+			JsonArray subjects = loaded.getAsJsonArray("content");
+			int width = loaded.get("size").getAsJsonObject().get("width").getAsInt();
+			int height = loaded.get("size").getAsJsonObject().get("height").getAsInt();
+			guiCon.newSchedule();
+			for(int i = 0; i < days.size(); i++) {
+				guiCon.getSchedule().addDay(days.get(i).getAsString());
+			}
+			for(int i = 0; i < times.size(); i++) {
+				Time currentTime = new Time();
+				currentTime.setTime(times.get(i).getAsInt());
+				guiCon.getSchedule().addTime(currentTime);
+			}
+			for(int i = 0; i < subjects.size(); i++) {
+				JsonArray currentDay = subjects.get(0).getAsJsonArray();
+				for(int j = 0; j < currentDay.size(); j++) {
+					JsonObject currentObject = currentDay.get(j).getAsJsonObject()
+					Time start = new Time();
+					Time end = new Time();
+					start.setTime(currentObject.get("start").getAsInt());
+					end.setTime(currentObject.get("end").getAsInt());
+					guiCon.getSchedule().addSubjectLabelBounds(controller.getPropertieHandler().getSubjectByName(currentObject.get("name").getAsString()), 
+							start, end, guiCon.getSchedule().getDays().get(i), currentObject.get("room").getAsString());
+				}
+			}
+			guiCon.displayPanel(guiCon.getSchedule());
+		} 
 	}
 }

@@ -226,4 +226,8 @@ public class GUIController {
 	public ArrayList<String> getScheduleDays() {
 		return schedule.getDays();
 	}
+
+	public void newSchedule() {
+		this.schedule = new Schedule();
+	}
 }

@@ -74,4 +74,8 @@ public class SubjectLabel extends JLabel {
 		}
 		return end.getTime();
 	}
+	
+	public String getRoom() {
+		return this.room;
+	}
 }
