@@ -128,6 +128,7 @@ public class GUIController {
 	}
 	
 	public void displayAddSubjectToSchedule(SubjectLabel source) {
+		System.out.println(source.getStartTime() + " - " + source.getEndTime() + " - " + source.getSubject());
 		this.addSubjectToSchedule.display(source);
 	}
 
@@ -136,8 +137,8 @@ public class GUIController {
 	}
 
 	public void openNewSchedule() {
-		// TODO: Open a JFileChooser and let the user decide which schedule he
-		// wants to open
+		controller.askSave();
+		controller.loadSchedule();
 	}
 
 	public void saveSchedule() {
@@ -145,7 +146,8 @@ public class GUIController {
 	}
 
 	public void backToMainMenu() {
-		// TODO: Ask if sure and go back to main menu
+		controller.askSave();
+		this.displayPanel(mainMenu.display());
 	}
 
 	public void displayPanel(Container panel) {
@@ -169,7 +171,13 @@ public class GUIController {
 	}
 
 	public void export(String fileType) {
-		// TODO: Check for name and call right controller export function.
+		if(fileType.equals("png") || fileType.equals("jpg")) {
+			controller.exportImage(fileType);
+		} else if(fileType.equals("pdf")) {
+			//TODO: PDF Export
+		} else if(fileType.equals("xls")) {
+			//TODO: xls Export
+		}
 	}
 
 	public ManageSubjects getManageSubjects() {

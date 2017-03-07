@@ -91,9 +91,7 @@ public class Schedule extends JComponent {
 	public Schedule generateSchedule() {
 		refreshSize();
 		for(Component component : getComponents()) {
-			if(component instanceof SubjectLabel) {
-				remove(component);
-			}
+			remove(component);
 		}
 		for(SubjectLabel subject : this.subjects) {
 			subject.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
@@ -124,6 +122,7 @@ public class Schedule extends JComponent {
 				add(currentLabel);
 			}
 		}
+		repaint();
 		return this;
 	}
 	
@@ -161,18 +160,18 @@ public class Schedule extends JComponent {
 		}
 		SubjectLabel newLabel = new SubjectLabel(subject, start, end, room, day);
 		newLabel.setBounds(labelWidth*(days.indexOf(day)+1), startY, labelWidth, (endY - startY));
-		System.out.println(newLabel.getBounds());
-		System.out.println(labelWidth);
 		for(SubjectLabel currentLabel : subjects) {
 			boolean error = false;
+			int currentStart = currentLabel.getStartTime();
+			int currentEnd = currentLabel.getStartTime();
 			if(!currentLabel.getDay().equals(day)) {
 				continue;
 			}
-			if(currentLabel.getY() >= newLabel.getY() && currentLabel.getY() + currentLabel.getHeight() > newLabel.getY()) {
+			if(currentStart <= start.getTime() && start.getTime() < currentEnd) {
 				error = true;
-			} else if(currentLabel.getY() >= newLabel.getY() + newLabel.getHeight() && currentLabel.getY() + currentLabel.getHeight() > newLabel.getY() + newLabel.getHeight()) {
+			} else if(currentStart < end.getTime() && end.getTime() <= currentEnd) {
 				error = true;
-			} else if(currentLabel.getY() > newLabel.getY() && currentLabel.getY() + currentLabel.getHeight() < newLabel.getY() + newLabel.getHeight()) {
+			} else if(start.getTime() <= currentStart && end.getTime() >= currentEnd) {
 				error = true;
 			}
 			if(error) {
@@ -216,7 +215,6 @@ public class Schedule extends JComponent {
 				}
 			}
 		});
-		System.out.println(newLabel.getBounds());
 		this.subjects.add(newLabel);
 		return true;
 	}
@@ -276,5 +274,6 @@ public class Schedule extends JComponent {
 			addSubjectLabelBounds(oldSL.getSubject(), oldSL.getStartTimeAsTime(), oldSL.getEndTimeAsTime(), oldSL.getDay(), oldSL.getRoom());
 		}
 		this.generateSchedule();
+		this.repaint();
 	}
 }

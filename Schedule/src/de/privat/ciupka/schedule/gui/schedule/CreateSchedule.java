@@ -25,21 +25,13 @@ public class CreateSchedule extends JPanel {
 	private boolean showed;
 	
 	private HintTextField endHourT;
-	private String lastEndHour;
 	private HintTextField endMinuteT;
-	private String lastEndMinute;
 	private HintTextField startHourT;
-	private String lastStartHour;
 	private HintTextField startMinuteT;
-	private String lastStartMinute;
 	private HintTextField widthT;
-	private String lastWidth;
 	private HintTextField heightT;
-	private String lastHeight;
 	private HintTextField intervalHourT;
-	private String lastIntervalHour;
 	private HintTextField intervalMinuteT;
-	private String lastIntervalMinute;
 	private JComboBox<String> startDayCB;
 	private JComboBox<String> endDayCB;	
 	
@@ -67,14 +59,6 @@ public class CreateSchedule extends JPanel {
 			intervalMinuteT.setText("");
 			focusHints();
 		}
-		lastEndHour = "";
-		lastEndMinute = "";
-		lastHeight = "";
-		lastStartHour = "";
-		lastStartMinute = "";
-		lastWidth = "";
-		lastIntervalMinute = "";
-		lastIntervalHour = "";
 		return this;
 	}
 	
@@ -103,35 +87,11 @@ public class CreateSchedule extends JPanel {
 		
 		endHourT = new HintTextField("HH");
 		endHourT.setBounds(228, 46, 30, 20);
-		endHourT.addKeyListener(new KeyListener() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				lastEndHour = checkInput(0, 23, lastEndHour, e);
-				((HintTextField) e.getSource()).setText(lastEndHour);
-			}
-
-			@Override
-			public void keyPressed(KeyEvent arg0) {}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {}
-		});
+		endHourT.setMinMax(0, 23);
 		
 		endMinuteT = new HintTextField("MM");
 		endMinuteT.setBounds(265, 46, 30, 20);
-		endMinuteT.addKeyListener(new KeyListener() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				lastEndMinute = checkInput(0, 59, lastEndMinute, e);
-				((HintTextField) e.getSource()).setText(lastEndMinute);
-			}
-
-			@Override
-			public void keyPressed(KeyEvent arg0) {}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {}
-		});
+		endMinuteT.setMinMax(0, 59);
 		
 		JButton swapTimesB = new JButton("<-->");
 		swapTimesB.setBounds(158, 46, 60, 20);
@@ -149,38 +109,14 @@ public class CreateSchedule extends JPanel {
 		
 		startHourT = new HintTextField("HH");
 		startHourT.setBounds(81, 46, 30, 20);
-		startHourT.addKeyListener(new KeyListener() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				lastStartHour = checkInput(0, 23, lastStartHour, e);
-				((HintTextField) e.getSource()).setText(lastStartHour);
-			}
-
-			@Override
-			public void keyPressed(KeyEvent arg0) {}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {}
-		});
+		startHourT.setMinMax(0, 23);
 		
 		JLabel label_1 = new JLabel(":");
 		label_1.setBounds(113, 49, 4, 14);
 		
 		startMinuteT = new HintTextField("MM");
 		startMinuteT.setBounds(118, 46, 30, 20);
-		startMinuteT.addKeyListener(new KeyListener() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				lastStartMinute = checkInput(0, 59, lastStartMinute, e);
-				((HintTextField) e.getSource()).setText(lastStartMinute);
-			}
-
-			@Override
-			public void keyPressed(KeyEvent arg0) {}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {}
-		});
+		startMinuteT.setMinMax(0, 59);
 		
 		JButton swapDaysB = new JButton("<-->");
 		swapDaysB.setBounds(158, 77, 60, 20);
@@ -207,35 +143,11 @@ public class CreateSchedule extends JPanel {
 		
 		widthT = new HintTextField("Width");
 		widthT.setBounds(118, 15, 60, 20);
-		widthT.addKeyListener(new KeyListener() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				lastWidth = checkInput(0, (int) WindowHandler.SCREEN_RESOLUTION.getWidth(), lastWidth, e);
-				((HintTextField) e.getSource()).setText(lastWidth);
-			}
-
-			@Override
-			public void keyPressed(KeyEvent arg0) {}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {}
-		});
+		widthT.setMinMax(0, (int) WindowHandler.SCREEN_RESOLUTION.getWidth());
 		
 		heightT = new HintTextField("Height");
 		heightT.setBounds(198, 15, 60, 20);
-		heightT.addKeyListener(new KeyListener() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				lastHeight = checkInput(0, (int) WindowHandler.SCREEN_RESOLUTION.getHeight(), lastHeight, e);
-				((HintTextField) e.getSource()).setText(lastHeight);
-			}
-
-			@Override
-			public void keyPressed(KeyEvent arg0) {}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {}
-		});
+		heightT.setMinMax(0, (int) WindowHandler.SCREEN_RESOLUTION.getHeight());
 		
 		JLabel lblX = new JLabel("x");
 		lblX.setHorizontalAlignment(SwingConstants.CENTER);
@@ -248,35 +160,11 @@ public class CreateSchedule extends JPanel {
 		
 		intervalHourT = new HintTextField("HH");
 		intervalHourT.setBounds(155, 125, 30, 20);
-		intervalHourT.addKeyListener(new KeyListener() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				lastIntervalHour = checkInput(0, 23, lastIntervalHour, e);
-				((HintTextField) e.getSource()).setText(lastIntervalHour);
-			}
-
-			@Override
-			public void keyPressed(KeyEvent arg0) {}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {}
-		});
+		intervalHourT.setMinMax(0, 23);
 		
 		intervalMinuteT = new HintTextField("MM");
 		intervalMinuteT.setBounds(194, 125, 30, 20);
-		intervalMinuteT.addKeyListener(new KeyListener() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				lastIntervalMinute = checkInput(0, 59, lastIntervalMinute, e);
-				((HintTextField) e.getSource()).setText(lastIntervalMinute);
-			}
-
-			@Override
-			public void keyPressed(KeyEvent arg0) {}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {}
-		});
+		intervalMinuteT.setMinMax(0, 59);
 		
 		
 		add(label_2);

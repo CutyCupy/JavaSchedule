@@ -30,6 +30,7 @@ public class ScheduleHandler {
 
 	private Controller controller;
 	private GUIController guiCon;
+	private FileFilter jsonFilter;
 
 	public static final String DEFAULT_PATH = PropertieHandler.SAVE_PATH + PropertieHandler.SEPERATOR + "schedules"
 			+ PropertieHandler.SEPERATOR;
@@ -38,14 +39,7 @@ public class ScheduleHandler {
 		controller = Controller.getInstance();
 		guiCon = GUIController.getInstance();
 		new File(DEFAULT_PATH).mkdirs();
-	}
-
-	public void saveSchedule() {
-		// {days: [Day1, Day2, ...], times: [Time1, Time2, ...], size: {width:
-		// width, height: height}, content: {{Subject1: {name: name, start:
-		// start, end: end, day: day, room: room}}}
-		JFileChooser chooser = new JFileChooser(DEFAULT_PATH);
-		chooser.setFileFilter(new FileFilter() {
+		jsonFilter = new FileFilter() {
 			@Override
 			public String getDescription() {
 				return "JSON-File (.json)";
@@ -55,7 +49,15 @@ public class ScheduleHandler {
 			public boolean accept(File f) {
 				return f.getName().endsWith(".json");
 			}
-		});
+		};
+	}
+
+	public void saveSchedule() {
+		// {days: [Day1, Day2, ...], times: [Time1, Time2, ...], size: {width:
+		// width, height: height}, content: {{Subject1: {name: name, start:
+		// start, end: end, day: day, room: room}}}
+		JFileChooser chooser = new JFileChooser(DEFAULT_PATH);
+		chooser.setFileFilter(jsonFilter);
 		int result = chooser.showSaveDialog(null);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			JsonObject save = new JsonObject();
@@ -89,11 +91,7 @@ public class ScheduleHandler {
 			save.add("size", size);
 			save.add("content", content);
 			try {
-				String path = chooser.getSelectedFile().getAbsolutePath();
-				if (!path.endsWith(".json")) {
-					path += ".json";
-				}
-				FileWriter writer = new FileWriter(new File(path));
+				FileWriter writer = new FileWriter(new File(getSavePath(chooser.getSelectedFile(), "json")));
 				writer.write(save.toString());
 				writer.close();
 			} catch (IOException e) {
@@ -103,10 +101,8 @@ public class ScheduleHandler {
 	}
 
 	public void loadSchedule() {
-		// {days: [Day1, Day2, ...], times: [Time1, Time2, ...], size: {width:
-		// width, height: height}, content: {{Subject1: {name: name, start:
-		// start, end: end, day: day, room: room}}}
 		JFileChooser chooser = new JFileChooser(DEFAULT_PATH);
+		chooser.setFileFilter(jsonFilter);
 		int result = chooser.showOpenDialog(null);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			JsonObject loaded = null;
@@ -177,9 +173,18 @@ public class ScheduleHandler {
 				}
 			});
 			chooser.showSaveDialog(null);
-			ImageIO.write(image, type, new File(chooser.getSelectedFile().getAbsolutePath() + "." + type));
+			ImageIO.write(image, type, new File(getSavePath(chooser.getSelectedFile(), type)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	private String getSavePath(File file, String ending) {
+		String path = file.getAbsolutePath();
+		if(!path.endsWith("." + ending)) {
+			path += "." + ending;
+		}
+		return path;
+	}
+	
 }

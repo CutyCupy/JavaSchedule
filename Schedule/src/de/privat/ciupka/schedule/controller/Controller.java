@@ -3,6 +3,7 @@ package de.privat.ciupka.schedule.controller;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import de.privat.ciupka.schedule.gui.popups.Messages;
 import de.privat.ciupka.schedule.gui.schedule.SubjectLabel;
 import de.privat.ciupka.schedule.logic.schedule.PropertieHandler;
 import de.privat.ciupka.schedule.logic.schedule.ScheduleHandler;
@@ -83,5 +84,11 @@ public class Controller {
 
 	public void loadSchedule() {
 		scheduleHandler.loadSchedule();
+	}
+	
+	public void askSave() {
+		if(Messages.openYesNoDialog("Save Schedule", "Do you want to save your schedule before leaving?")) {
+			saveSchedule();
+		}
 	}
 }

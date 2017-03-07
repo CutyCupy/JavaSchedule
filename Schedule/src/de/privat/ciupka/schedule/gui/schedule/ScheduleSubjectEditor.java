@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 import de.privat.ciupka.schedule.controller.Controller;
 import de.privat.ciupka.schedule.controller.GUIController;
+import de.privat.ciupka.schedule.gui.mainmenu.WindowHandler;
 import de.privat.ciupka.schedule.logic.schedule.Subject;
 
 public class ScheduleSubjectEditor extends JFrame {
@@ -98,9 +99,14 @@ public class ScheduleSubjectEditor extends JFrame {
 	
 	private void resetComponents(SubjectLabel subject) {
 		startHourT.setText(String.valueOf((int) subject.getStartTime() / 60));
+		System.out.println((int) subject.getStartTime() / 60);
 		startMinuteT.setText(String.valueOf((int) subject.getStartTime() % 60));
 		endHourT.setText(String.valueOf((int) subject.getEndTime() / 60));
 		endMinuteT.setText(String.valueOf((int) subject.getEndTime() % 60));
+		lastEndHour = endHourT.getText();
+		lastEndMinute = endMinuteT.getText();
+		lastStartHour = startHourT.getText();
+		lastStartMinute = startMinuteT.getText();
 		roomT.setText(subject.getRoom());
 		focusHints();
 		subjectsCB.removeAllItems();
@@ -124,10 +130,10 @@ public class ScheduleSubjectEditor extends JFrame {
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		this.setBounds(0, 0, 255, 160);
+		this.setSize(255, 160);
+		this.setLocation(WindowHandler.placeFrameToMiddle(this));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
 		
 		subjectsCB = new JComboBox<String>();
 		subjectsCB.setBounds(10, 10, 212, 20);
@@ -139,23 +145,12 @@ public class ScheduleSubjectEditor extends JFrame {
 		
 		roomT = new HintTextField("Room");
 		roomT.setBounds(162, 40, 50, 20);
+		roomT.checkInputs(false);
 		contentPane.add(roomT);
 		
 		startHourT = new HintTextField("HH");
 		startHourT.setBounds(10, 70, 30, 20);
-		startHourT.addKeyListener(new KeyListener() {
-			@Override
-			public void keyPressed(KeyEvent e) {}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				lastStartHour = checkInput(0, 23, String.valueOf(e.getKeyChar()), e);
-				((HintTextField) e.getSource()).setText(lastStartHour);
-			}
-
-			@Override
-			public void keyTyped(KeyEvent e) {}
-		});
+		startHourT.setMinMax(0, 23);
 		contentPane.add(startHourT);
 		
 		JLabel label = new JLabel(":");
@@ -164,19 +159,7 @@ public class ScheduleSubjectEditor extends JFrame {
 		
 		startMinuteT = new HintTextField("MM");
 		startMinuteT.setBounds(46, 70, 30, 20);
-		startMinuteT.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				lastStartMinute = checkInput(0, 59, String.valueOf(e.getKeyChar()), e);
-				((HintTextField) e.getSource()).setText(lastStartMinute);
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {}
-		});
+		startMinuteT.setMinMax(0, 59);
 		contentPane.add(startMinuteT);
 		
 		JButton swapT = new JButton("<-->");
@@ -193,19 +176,7 @@ public class ScheduleSubjectEditor extends JFrame {
 		
 		endHourT = new HintTextField("HH");
 		endHourT.setBounds(156, 70, 30, 20);
-		endHourT.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				lastEndHour = checkInput(0, 23, String.valueOf(e.getKeyChar()), e);
-				((HintTextField) e.getSource()).setText(lastEndHour);
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {}
-		});
+		endHourT.setMinMax(0, 23);
 		contentPane.add(endHourT);
 		
 		JLabel label_1 = new JLabel(":");
@@ -214,19 +185,7 @@ public class ScheduleSubjectEditor extends JFrame {
 		
 		endMinuteT = new HintTextField("MM");
 		endMinuteT.setBounds(192, 70, 30, 20);
-		endMinuteT.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				lastEndMinute = checkInput(0, 60, String.valueOf(e.getKeyChar()), e);
-				((HintTextField) e.getSource()).setText(lastEndMinute);
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {}
-		});
+		endMinuteT.setMinMax(0, 59);
 		contentPane.add(endMinuteT);
 		
 		addB = new JButton("Add");

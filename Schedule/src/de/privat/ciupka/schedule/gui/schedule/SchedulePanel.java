@@ -71,20 +71,6 @@ public class SchedulePanel extends JPanel {
 		exportPDF.setName("pdf");
 		exportXLS.setName("xls");
 		
-		exportPNG.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Controller.getInstance().exportImage("png");
-			}
-		});
-		
-		exportJPG.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Controller.getInstance().exportImage("jpg");
-			}
-		});
-		
 		export.add(exportPNG);
 		export.add(exportJPG);
 		export.add(exportPDF);
