@@ -45,7 +45,7 @@ public class MainMenu extends JPanel {
 		JButton openB = new JButton("Open Schedule");
 		openB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//TODO: Add openB ActionListener
+				guiCon.loadSchedule();
 			}
 		});
 		openB.setSize(150, 25);

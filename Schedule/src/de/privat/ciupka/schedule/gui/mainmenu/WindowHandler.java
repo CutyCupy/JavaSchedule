@@ -22,7 +22,6 @@ public class WindowHandler {
 	
 	public static int placeItemToHMiddle(int itemWidth, int containerWidth) {
 		int x = (int) ((containerWidth / 2) - (itemWidth / 2));
-		System.out.println(x + " - " + containerWidth + " and " + itemWidth);
 		return x;
 	}
 	

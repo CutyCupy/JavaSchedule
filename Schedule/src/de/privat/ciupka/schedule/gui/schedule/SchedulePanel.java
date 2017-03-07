@@ -28,6 +28,7 @@ public class SchedulePanel extends JPanel {
 	private Action returnBackAction;
 
 	private GUIController guiCon;
+	private JMenuBar menubar;
 
 	public SchedulePanel() {
 		setBounds(0, 0, 350, 275);
@@ -41,12 +42,13 @@ public class SchedulePanel extends JPanel {
 			createItems();
 			showed = true;
 		}
+		this.guiCon.getMainFrame().updateMenu(menubar);
 		return this;
 	}
 
 	@SuppressWarnings("serial")
 	private void createItems() {
-		JMenuBar menubar = new JMenuBar();
+		menubar = new JMenuBar();
 		
 		//JMenus
 		JMenu file = new JMenu("Schedule");
@@ -68,6 +70,20 @@ public class SchedulePanel extends JPanel {
 		exportJPG.setName("jpg");
 		exportPDF.setName("pdf");
 		exportXLS.setName("xls");
+		
+		exportPNG.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Controller.getInstance().exportImage("png");
+			}
+		});
+		
+		exportJPG.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Controller.getInstance().exportImage("jpg");
+			}
+		});
 		
 		export.add(exportPNG);
 		export.add(exportJPG);
@@ -152,7 +168,6 @@ public class SchedulePanel extends JPanel {
 		
 		menubar.add(file);
 		menubar.add(subjects);
-		this.guiCon.getMainFrame().updateMenu(menubar);
 		addKeyMaps();
 	}
 	

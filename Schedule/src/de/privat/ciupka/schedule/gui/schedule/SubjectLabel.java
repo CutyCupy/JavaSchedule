@@ -15,8 +15,9 @@ public class SubjectLabel extends JLabel {
 	private Time start;
 	private Time end;
 	private String room;
+	private String day;
 	
-	public SubjectLabel(Subject subject, Time start, Time end, String room) {
+	public SubjectLabel(Subject subject, Time start, Time end, String room, String day) {
 		super();
 		this.subject = subject;
 		this.setText(convertToMultiline(subject.getName() + "\n" + subject.getShortName() + "\n" + subject.getTeacher() + "\n" + room, true));
@@ -25,6 +26,7 @@ public class SubjectLabel extends JLabel {
 		this.start = start;
 		this.end = end;
 		this.room = room;
+		this.day = day;
 		this.setHorizontalAlignment(SwingConstants.CENTER);
 		this.setVerticalAlignment(SwingConstants.CENTER);
 		setOpaque(true);
@@ -77,5 +79,17 @@ public class SubjectLabel extends JLabel {
 	
 	public String getRoom() {
 		return this.room;
+	}
+
+	public String getDay() {
+		return this.day;
+	}
+
+	public Time getStartTimeAsTime() {
+		return this.start;
+	}
+	
+	public Time getEndTimeAsTime() {
+		return this.end;
 	}
 }

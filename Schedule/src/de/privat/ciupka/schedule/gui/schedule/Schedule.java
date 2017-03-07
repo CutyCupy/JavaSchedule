@@ -1,6 +1,7 @@
 package de.privat.ciupka.schedule.gui.schedule;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -9,9 +10,10 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 import javax.swing.SwingConstants;
 
+import de.privat.ciupka.schedule.controller.GUIController;
+import de.privat.ciupka.schedule.gui.popups.Messages;
 import de.privat.ciupka.schedule.logic.schedule.Subject;
 import de.privat.ciupka.schedule.logic.schedule.Time;
 
@@ -88,6 +90,15 @@ public class Schedule extends JComponent {
 	
 	public Schedule generateSchedule() {
 		refreshSize();
+		for(Component component : getComponents()) {
+			if(component instanceof SubjectLabel) {
+				remove(component);
+			}
+		}
+		for(SubjectLabel subject : this.subjects) {
+			subject.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+			add(subject);
+		}
 		for(int i = -1; i < days.size(); i++) {
 			JLabel currentLabel = new JLabel();
 			currentLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -113,15 +124,14 @@ public class Schedule extends JComponent {
 				add(currentLabel);
 			}
 		}
-		for(SubjectLabel subject : this.subjects) {
-			add(subject);
-		}
 		return this;
 	}
 	
 	public boolean addSubjectLabelBounds(Subject subject, Time start, Time end, String day, String room) {
+		refreshSize();
 		int startTime = start.getTime();
 		int endTime = end.getTime();
+		System.out.println("Start: " + startTime + " - End: " + endTime);
 		if(startTime >= endTime || startTime < times.get(0).getTime() || endTime > times.get(times.size() - 1).getTime()) {
 			return false;
 		}
@@ -149,19 +159,35 @@ public class Schedule extends JComponent {
 				break;
 			}
 		}
-		SubjectLabel newLabel = new SubjectLabel(subject, start, end, room);
+		SubjectLabel newLabel = new SubjectLabel(subject, start, end, room, day);
 		newLabel.setBounds(labelWidth*(days.indexOf(day)+1), startY, labelWidth, (endY - startY));
+		System.out.println(newLabel.getBounds());
+		System.out.println(labelWidth);
+		for(SubjectLabel currentLabel : subjects) {
+			boolean error = false;
+			if(!currentLabel.getDay().equals(day)) {
+				continue;
+			}
+			if(currentLabel.getY() >= newLabel.getY() && currentLabel.getY() + currentLabel.getHeight() > newLabel.getY()) {
+				error = true;
+			} else if(currentLabel.getY() >= newLabel.getY() + newLabel.getHeight() && currentLabel.getY() + currentLabel.getHeight() > newLabel.getY() + newLabel.getHeight()) {
+				error = true;
+			} else if(currentLabel.getY() > newLabel.getY() && currentLabel.getY() + currentLabel.getHeight() < newLabel.getY() + newLabel.getHeight()) {
+				error = true;
+			}
+			if(error) {
+				if(!Messages.openYesNoDialog("Overlap!", "The subject " + subject.getName() + " would overlap with " + currentLabel.getSubject().getName() + " at " + day + "! Do you want to move on?")) {
+					System.out.println("Dont move on");
+					return false;
+				}
+			}
+		}
 		newLabel.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {}
 			
 			@Override
-			public void mouseReleased(MouseEvent e) {
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				
-			}
+			public void mousePressed(MouseEvent e) {}
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -184,12 +210,14 @@ public class Schedule extends JComponent {
 				if(editable) {
 					if(remove) {
 						subjects.remove((SubjectLabel) e.getSource());
+					} else {
+						GUIController.getInstance().displayAddSubjectToSchedule(findSubject((SubjectLabel) e.getSource()));
 					}
 				}
 			}
 		});
+		System.out.println(newLabel.getBounds());
 		this.subjects.add(newLabel);
-		this.getParent().repaint();
 		return true;
 	}
 	
@@ -232,4 +260,21 @@ public class Schedule extends JComponent {
 		return this.subjects;
 	}
 	
+	private SubjectLabel findSubject(SubjectLabel source) {
+		for(int i = 0; i < subjects.size(); i++) {
+			if(subjects.get(i).getBounds().equals(source.getBounds())) {
+				subjects.get(i).getSubject().getName();
+				return subjects.get(i);
+			}
+		}
+		return null;
+	}
+	
+	public void editSubject(SubjectLabel oldSL, SubjectLabel newSL) {
+		this.subjects.remove(oldSL);
+		if(!addSubjectLabelBounds(newSL.getSubject(), newSL.getStartTimeAsTime(), newSL.getEndTimeAsTime(), newSL.getDay(), newSL.getRoom())) {
+			addSubjectLabelBounds(oldSL.getSubject(), oldSL.getStartTimeAsTime(), oldSL.getEndTimeAsTime(), oldSL.getDay(), oldSL.getRoom());
+		}
+		this.generateSchedule();
+	}
 }

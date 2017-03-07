@@ -67,7 +67,7 @@ public class AddOrEditSubject extends JPanel {
 			addOrEditB.removeActionListener(addAction);
 			addOrEditB.addActionListener(editAction);
 		} else {
-			System.out.println(1/0);
+			System.err.println(1/0);
 		}
 		setBounds(0, 0, 350, 300);
 		return this;

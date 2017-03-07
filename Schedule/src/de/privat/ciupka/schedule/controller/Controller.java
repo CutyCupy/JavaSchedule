@@ -39,8 +39,6 @@ public class Controller {
 	}
 	
 	public void addSubject(Subject subject) {
-		System.out.println(subject.getColor().getRGB());
-		System.out.println(Color.BLACK.getRGB());
 		propertieHandler.addSubject(subject);
 	}
 	
@@ -59,19 +57,15 @@ public class Controller {
 		propertieHandler.saveSubjects();
 	}
 	
-	public void exportToPNG(String[] days, Time[] times, ArrayList<SubjectLabel> subjects, String Path) {
-		//TODO: Writing a logic function that exports the current schedule as PNG image.
+	public void exportImage(String type) {
+		scheduleHandler.exportImage(type);
 	}
 	
-	public void exportToJPG(String[] days, Time[] times, ArrayList<SubjectLabel> subjects, String Path) {
-		//TODO: Writing a logic function that exports the current schedule as JPG image.
-	}
-	
-	public void exportToPDF(String[] days, Time[] times, ArrayList<SubjectLabel> subjects, String Path) {
+	public void exportToPDF() {
 		//TODO: Writing a logic function that exports the current schedule as PDF file.
 	}
 	
-	public void exportToXLS(String[] days, Time[] times, ArrayList<SubjectLabel> subjects, String Path) {
+	public void exportToXLS() {
 		//TODO: Writing a logic function that exports the current schedule as XLS (Excel) file (maybe).
 	}
 
@@ -85,5 +79,9 @@ public class Controller {
 
 	public void saveSchedule() {
 		scheduleHandler.saveSchedule();
+	}
+
+	public void loadSchedule() {
+		scheduleHandler.loadSchedule();
 	}
 }

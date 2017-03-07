@@ -1,7 +1,9 @@
 package de.privat.ciupka.schedule.controller;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
@@ -81,17 +83,14 @@ public class GUIController {
 			int endTime = endH * 60 + endM;
 			int intervalTime = intervalH * 60 + intervalM;
 			if (startTime > endTime) {
-				System.out.println("startTime > endTime");
 				start.setTime(endTime);
 				end.setTime(startTime);
 			} else {
-				System.out.println("endTime > startTime");
 				start.setTime(startTime);
 				end.setTime(endTime);
 			}
 			int currentTime = start.getTime();
 			while (currentTime <= end.getTime()) {
-				System.out.println(currentTime);
 				Time currentT = new Time();
 				currentT.setTime(currentTime);
 				schedule.addTime(currentT);
@@ -113,7 +112,6 @@ public class GUIController {
 				endDayIndex = temp;
 			}
 			IntStream.range(startDayIndex, endDayIndex + 1).forEach(n -> {
-				System.out.println(n);
 				schedule.addDay(Schedule.ALL_DAYS[n]);
 			});
 			schedulePanel.setSchedule(schedule.generateSchedule(w, h));
@@ -127,6 +125,10 @@ public class GUIController {
 
 	public void displayAddSubjectToSchedule() {
 		this.addSubjectToSchedule.display();
+	}
+	
+	public void displayAddSubjectToSchedule(SubjectLabel source) {
+		this.addSubjectToSchedule.display(source);
 	}
 
 	public void restartSchedule() {
@@ -228,6 +230,29 @@ public class GUIController {
 	}
 
 	public void newSchedule() {
-		this.schedule = new Schedule();
+		this.schedule.reset();
+	}
+
+	public SubjectLabel createSubjectLabel(String startMinute, String startHour, String endMinute, String endHour, String room, String subjectName, String day) {
+		try {
+			Time start = new Time();
+			Time end = new Time();
+			start.setTime(Integer.parseInt(startHour), Integer.parseInt(startMinute));
+			end.setTime(Integer.parseInt(endHour), Integer.parseInt(endMinute));
+			SubjectLabel result = new SubjectLabel(controller.getPropertieHandler().getSubjectByName(subjectName), start, end, room, day);
+			return result;
+		} catch(Exception e) {
+			ErrorMessages.createErrorMessage("Create Subject Label error!", "Please enter a valid Time for the subject.");
+		}
+		return null;
+	}
+
+	public void loadSchedule() {
+		controller.loadSchedule();
+	}
+
+	public SchedulePanel setSchedule() {
+		schedulePanel.setSchedule(this.schedule.generateSchedule());
+		return schedulePanel.display();
 	}
 }

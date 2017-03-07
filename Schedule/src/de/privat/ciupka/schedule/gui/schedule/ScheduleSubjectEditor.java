@@ -21,11 +21,14 @@ import de.privat.ciupka.schedule.logic.schedule.Subject;
 public class ScheduleSubjectEditor extends JFrame {
 	
 	private boolean showed;
+	private boolean edited;
 	private String lastEndHour;
 	private String lastEndMinute;
 	private String lastStartHour;
 	private String lastStartMinute;
 	private GUIController guiCon;
+	
+	private SubjectLabel editedSubject;
 
 	private JComboBox<String> subjectsCB;
 	private JComboBox<String> daysCB;
@@ -53,6 +56,22 @@ public class ScheduleSubjectEditor extends JFrame {
 			createItems();
 		}
 		resetComponents();
+		editedSubject = null;
+		this.setVisible(true);
+		return this;
+	}
+	
+	public ScheduleSubjectEditor display(SubjectLabel subject) {
+		if(!showed) {
+			showed = true;
+			lastEndHour = "";
+			lastEndMinute = "";
+			lastStartHour = "";
+			lastStartMinute = "";
+			createItems();
+		}
+		resetComponents(subject);
+		editedSubject = subject;
 		this.setVisible(true);
 		return this;
 	}
@@ -74,6 +93,31 @@ public class ScheduleSubjectEditor extends JFrame {
 		}
 		subjectsCB.setSelectedIndex(0);
 		daysCB.setSelectedIndex(0);
+		this.addB.setText("Add");
+	}
+	
+	private void resetComponents(SubjectLabel subject) {
+		startHourT.setText(String.valueOf((int) subject.getStartTime() / 60));
+		startMinuteT.setText(String.valueOf((int) subject.getStartTime() % 60));
+		endHourT.setText(String.valueOf((int) subject.getEndTime() / 60));
+		endMinuteT.setText(String.valueOf((int) subject.getEndTime() % 60));
+		roomT.setText(subject.getRoom());
+		focusHints();
+		subjectsCB.removeAllItems();
+		daysCB.removeAllItems();
+		for(Subject currentSubject : Controller.getInstance().loadAllSubjects()) {
+			subjectsCB.addItem(currentSubject.getName());
+			if(subject.getSubject().getName().equals(currentSubject.getName())) {
+				subjectsCB.setSelectedItem(currentSubject.getName());
+			}
+		}
+		for(String day : guiCon.getScheduleDays()) {
+			daysCB.addItem(day);
+			if(subject.getDay().equals(day)) {
+				subjectsCB.setSelectedItem(day);
+			}
+		}
+		this.addB.setText("Edit");
 	}
 
 	public void createItems() {
@@ -190,8 +234,14 @@ public class ScheduleSubjectEditor extends JFrame {
 		addB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				guiCon.addSubjectToSchedule(startMinuteT.getText(), startHourT.getText(), endMinuteT.getText(), 
-						endHourT.getText(), roomT.getText(), (String) subjectsCB.getSelectedItem(), (String) daysCB.getSelectedItem());
+				if(addB.getText().equals("Add")) {
+					guiCon.addSubjectToSchedule(startMinuteT.getText(), startHourT.getText(), endMinuteT.getText(), 
+							endHourT.getText(), roomT.getText(), (String) subjectsCB.getSelectedItem(), (String) daysCB.getSelectedItem());
+				} else {
+					guiCon.getSchedule().editSubject(editedSubject, guiCon.createSubjectLabel(startMinuteT.getText(), startHourT.getText(), endMinuteT.getText(), 
+							endHourT.getText(), roomT.getText(), (String) subjectsCB.getSelectedItem(), (String) daysCB.getSelectedItem()));
+				}
+				setVisible(false);
 			}
 		});
 		contentPane.add(addB);
@@ -240,6 +290,10 @@ public class ScheduleSubjectEditor extends JFrame {
 		String temp = one.getText();
 		one.setText(two.getText());
 		two.setText(temp);
+	}
+	
+	public SubjectLabel getEditedSubject() {
+		return this.editedSubject;
 	}
 
 }

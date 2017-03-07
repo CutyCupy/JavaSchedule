@@ -94,7 +94,6 @@ public class PropertieHandler {
 	
 	public Subject readAndCreateSubject(String name) {
 		String shortName = subjectNames.getProperty(name);
-		System.out.println("SHORTNAME: " + shortName);
 		Subject newSubject = null;
 		if(shortName != null) {
 			newSubject = new Subject();
@@ -108,8 +107,6 @@ public class PropertieHandler {
 			newSubject.setShortName(shortName);
 			newSubject.setTeacher(subjects.getProperty(shortName + "_teacher", ""));
 			newSubject.setColor(new Color(rgb));
-			System.out.println(newSubject.getColor().getRGB() + " - " + rgb);
-			System.out.println(Color.BLACK.getRGB());
 		}
 		return newSubject;
 	}
