@@ -13,6 +13,7 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		setVisible(true);
 		addWindowListener(new MyWindowListener());
+		setResizable(false);
 	}
 	
 	public void updateContentPane(Container contentPane) {

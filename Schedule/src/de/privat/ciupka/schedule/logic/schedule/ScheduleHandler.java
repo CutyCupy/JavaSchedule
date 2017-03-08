@@ -141,7 +141,7 @@ public class ScheduleHandler {
 				Time end = new Time();
 				start.setTime(currentObject.get("start").getAsInt());
 				end.setTime(currentObject.get("end").getAsInt());
-				Subject subject = controller.getPropertieHandler().getSubjectByName(currentObject.get("name").getAsString());
+				Subject subject = controller.getPropertieHandler().getSubjectByName(currentObject.get("name").getAsString(), true);
 				if(subject != null) {
 					guiCon.getSchedule().addSubjectLabelBounds(subject,
 							start, end, currentObject.get("day").getAsString(), currentObject.get("room").getAsString());

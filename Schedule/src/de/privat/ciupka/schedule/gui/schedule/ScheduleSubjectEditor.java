@@ -79,8 +79,10 @@ public class ScheduleSubjectEditor extends JFrame {
 		for(String day : guiCon.getScheduleDays()) {
 			daysCB.addItem(day);
 		}
-		subjectsCB.setSelectedIndex(0);
-		daysCB.setSelectedIndex(0);
+		if(subjectsCB.getItemCount() > 0 && daysCB.getItemCount() > 0) {
+			subjectsCB.setSelectedIndex(0);
+			daysCB.setSelectedIndex(0);
+		}
 		this.addB.setText("Add");
 	}
 	
@@ -185,13 +187,13 @@ public class ScheduleSubjectEditor extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(addB.getText().equals("Add")) {
-					guiCon.addSubjectToSchedule(startMinuteT.getText(), startHourT.getText(), endMinuteT.getText(), 
-							endHourT.getText(), roomT.getText(), (String) subjectsCB.getSelectedItem(), (String) daysCB.getSelectedItem());
+					setVisible(!guiCon.addSubjectToSchedule(startMinuteT.getText(), startHourT.getText(), endMinuteT.getText(), 
+							endHourT.getText(), roomT.getText(), (String) subjectsCB.getSelectedItem(), (String) daysCB.getSelectedItem()));
 				} else {
+					setVisible(false);
 					guiCon.getSchedule().editSubject(editedSubject, guiCon.createSubjectLabel(startMinuteT.getText(), startHourT.getText(), endMinuteT.getText(), 
 							endHourT.getText(), roomT.getText(), (String) subjectsCB.getSelectedItem(), (String) daysCB.getSelectedItem()));
 				}
-				setVisible(false);
 			}
 		});
 		contentPane.add(addB);
@@ -244,6 +246,28 @@ public class ScheduleSubjectEditor extends JFrame {
 	
 	public SubjectLabel getEditedSubject() {
 		return this.editedSubject;
+	}
+	
+	public void setSelectedDay(String day) {
+		daysCB.setSelectedItem(day);
+	}
+	
+	public void setSelectedSubject(String name) {
+		subjectsCB.setSelectedItem(name);
+	}
+	
+	public void setStartTime(int time) {
+		startHourT.setText(String.valueOf((int) time / 60));
+		startMinuteT.setText(String.valueOf((int) time % 60));
+		startHourT.focusLost(null);
+		startMinuteT.focusLost(null);
+	}
+	
+	public void setEndTime(int time) {
+		endHourT.setText(String.valueOf((int) time / 60));
+		endMinuteT.setText(String.valueOf((int) time % 60));
+		endHourT.focusLost(null);
+		endMinuteT.focusLost(null);
 	}
 
 }

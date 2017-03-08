@@ -31,6 +31,7 @@ public class Schedule extends JComponent {
 	private int labelWidth;
 	private boolean editable;
 	private boolean remove;
+	private GUIController guiCon;
 	
 	
 	public Schedule(int width, int height) {
@@ -38,12 +39,14 @@ public class Schedule extends JComponent {
 		this.days = new ArrayList<String>();
 		this.subjects = new ArrayList<SubjectLabel>();
 		this.setSize(width, height);
+		guiCon = GUIController.getInstance();
 	}
 	
 	public Schedule() {
 		this.times = new ArrayList<Time>();
 		this.days = new ArrayList<String>();
 		this.subjects = new ArrayList<SubjectLabel>();
+		guiCon = GUIController.getInstance();
 	}
 	
 	public void setTimes(Time[] newTimes) {
@@ -101,6 +104,26 @@ public class Schedule extends JComponent {
 			currentLabel.setVerticalAlignment(SwingConstants.CENTER);
 			if(i != -1) {
 				currentLabel.setText(days.get(i));
+				currentLabel.setName(days.get(i));
+				currentLabel.addMouseListener(new MouseListener() {
+					@Override
+					public void mouseReleased(MouseEvent e) {}
+					
+					@Override
+					public void mousePressed(MouseEvent e) {}
+					
+					@Override
+					public void mouseExited(MouseEvent e) {}
+					
+					@Override
+					public void mouseEntered(MouseEvent e) {}
+					
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						guiCon.displayAddSubjectToSchedule();
+						setDay(e.getComponent().getName());
+					}
+				});
 			}
 			currentLabel.setBounds(labelWidth * (i + 1), 0, labelWidth, labelHeight);
 			currentLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
@@ -108,8 +131,29 @@ public class Schedule extends JComponent {
 		}
 		for(int i = 0; i < times.size(); i++) {
 			JLabel currentLabel = new JLabel(times.get(i).toString());
+			currentLabel.setName(String.valueOf(i));
 			currentLabel.setBounds(0, labelHeight * (i + 1), labelWidth, labelHeight);
 			currentLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+			currentLabel.addMouseListener(new MouseListener() {
+				@Override
+				public void mouseReleased(MouseEvent e) {}
+				
+				@Override
+				public void mousePressed(MouseEvent e) {}
+				
+				@Override
+				public void mouseExited(MouseEvent e) {}
+				
+				@Override
+				public void mouseEntered(MouseEvent e) {}
+				
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					int index = Integer.parseInt(e.getComponent().getName());
+					guiCon.displayAddSubjectToSchedule();
+					setTime(index);
+				}
+			});
 			add(currentLabel);
 		}
 		for(int i = 1; i < days.size() + 1; i++) {
@@ -117,6 +161,28 @@ public class Schedule extends JComponent {
 				JLabel currentLabel = new JLabel();
 				currentLabel.setBounds(labelWidth * i,  labelHeight * j, labelWidth, labelHeight);
 				currentLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+				currentLabel.setName(days.get(i-1) + "," + String.valueOf(j));
+				currentLabel.addMouseListener(new MouseListener() {
+					@Override
+					public void mouseReleased(MouseEvent e) {}
+					
+					@Override
+					public void mousePressed(MouseEvent e) {}
+					
+					@Override
+					public void mouseExited(MouseEvent e) {}
+					
+					@Override
+					public void mouseEntered(MouseEvent e) {}
+					
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						guiCon.displayAddSubjectToSchedule();
+						String[] name = e.getComponent().getName().split(",");
+						setDay(name[0]);
+						setTime(Integer.valueOf(name[1])-1);
+					}
+				});
 				add(currentLabel);
 			}
 		}
@@ -286,5 +352,23 @@ public class Schedule extends JComponent {
 		}
 		this.generateSchedule();
 		this.repaint();
+	}
+	
+	private void setTime(int index) {
+		if(index != times.size() - 1) {
+			guiCon.getAddSubjectToSchedule().setStartTime(times.get(index).getTime());
+			guiCon.getAddSubjectToSchedule().setEndTime(times.get(index+1).getTime());
+		} else {
+			if(index != 0) {
+				guiCon.getAddSubjectToSchedule().setStartTime(times.get(index).getTime());
+				guiCon.getAddSubjectToSchedule().setEndTime(times.get(index).getTime() + times.get(1).getTime() - times.get(0).getTime());
+			} else {
+				guiCon.getAddSubjectToSchedule().setStartTime(times.get(index).getTime());
+			}
+		}
+	}
+	
+	private void setDay(String day) {
+		guiCon.getAddSubjectToSchedule().setSelectedDay(day);
 	}
 }

@@ -217,13 +217,19 @@ public class GUIController {
 		return this.addSubject;
 	}
 
-	public void addSubject(String name, String shortName, String teacher, Color color) {
+	public boolean addSubject(String name, String shortName, String teacher, Color color) {
 		Subject newSubject = new Subject();
 		newSubject.setName(name);
 		newSubject.setShortName(shortName);
 		newSubject.setTeacher(teacher);
 		newSubject.setColor(color);
-		Controller.getInstance().addSubject(newSubject);
+		if(controller.checkSubject(newSubject)) {
+			controller.addSubject(newSubject);
+			return true;
+		} else {
+			ErrorMessages.createErrorMessage("Not unique!", "The given name and/or shortname is not unique!");
+			return false;
+		}
 	}
 
 	public void removeSubject(Subject subject) {
@@ -244,21 +250,25 @@ public class GUIController {
 		return (0.2126*red + 0.7152*green + 0.0722*blue) / 255 > 0.5 ? Color.BLACK : Color.WHITE;
 	}
 
-	public void addSubjectToSchedule(String startMinute, String startHour, String endMinute, String endHour, String room, String subjectName, String day) {
+	public boolean addSubjectToSchedule(String startMinute, String startHour, String endMinute, String endHour, String room, String subjectName, String day) {
 		try {
 			Time start = new Time();
 			Time end = new Time();
 			start.setTime(Integer.parseInt(startHour), Integer.parseInt(startMinute));
 			end.setTime(Integer.parseInt(endHour), Integer.parseInt(endMinute));
-			Subject subject = controller.getPropertieHandler().getSubjectByName(subjectName);
+			Subject subject = controller.getPropertieHandler().getSubjectByName(subjectName, true);
 			if(subject != null) {
 				schedule.addSubjectLabelBounds(subject, start, end, day, room);
 				schedule.generateSchedule();
 				this.addSubjectToSchedule.setVisible(false);
+			} else {
+				return false;
 			}
 		} catch(Exception e) {
 			ErrorMessages.createErrorMessage("Add Subject error!", "Please enter a valid Time for the subject.");
+			return false;
 		}
+		return true;
 	}
 	
 	public ArrayList<String> getScheduleDays() {
@@ -275,7 +285,7 @@ public class GUIController {
 			Time end = new Time();
 			start.setTime(Integer.parseInt(startHour), Integer.parseInt(startMinute));
 			end.setTime(Integer.parseInt(endHour), Integer.parseInt(endMinute));
-			SubjectLabel result = new SubjectLabel(controller.getPropertieHandler().getSubjectByName(subjectName), start, end, room, day);
+			SubjectLabel result = new SubjectLabel(controller.getPropertieHandler().getSubjectByName(subjectName, true), start, end, room, day);
 			return result;
 		} catch(Exception e) {
 			ErrorMessages.createErrorMessage("Create Subject Label error!", "Please enter a valid Time for the subject.");
@@ -294,5 +304,9 @@ public class GUIController {
 
 	public SchedulePanel getSchedulePanel() {
 		return this.schedulePanel;
+	}
+
+	public ScheduleSubjectEditor getAddSubjectToSchedule() {
+		return this.addSubjectToSchedule;
 	}
 }

@@ -56,6 +56,13 @@ public class Controller {
 	public ArrayList<Subject> loadAllSubjects() {
 		return propertieHandler.loadSubjects();
 	}
+
+	public boolean checkSubject(Subject newSubject) {
+		if(propertieHandler.getSubjectByName(newSubject.getName(), false) == null && propertieHandler.checkUniqueShortName(newSubject.getShortName())) {
+			return true;
+		}
+		return false;
+	}
 	
 	/**
 	 * Adds a newly created Subject.
@@ -148,4 +155,5 @@ public class Controller {
 			saveSchedule();
 		}
 	}
+
 }

@@ -119,6 +119,7 @@ public class PropertieHandler {
 			Subject newSubject = readAndCreateSubject((String) name);
 			if(newSubject != null) {
 				result.add(newSubject);
+				System.out.println("NEW: " + newSubject);
 			}
 		}
 		return result;
@@ -130,14 +131,27 @@ public class PropertieHandler {
 		subjects.remove(subject.getShortName() + "_color");
 	}
 	
-	public Subject getSubjectByName(String name) {
+	public Subject getSubjectByName(String name, boolean showError) {
 		ArrayList<Subject> subjects = loadSubjects();
 		for(Subject subject : subjects) {
+			System.out.println(subject.getName() + " - " + name);
 			if(subject.getName().equals(name)) {
 				return subject;
 			}
 		}
-		ErrorMessages.createErrorMessage("Subject not found!", "We couldnt find the subject " + name + "!");
+		if(showError) {
+			ErrorMessages.createErrorMessage("Subject not found!", "We couldnt find the subject " + name + "!");
+		}
 		return null;
+	}
+
+	
+	public boolean checkUniqueShortName(String shortName) {
+		System.out.println(shortName);
+		for(Object o : subjectNames.keySet()) {
+			System.out.println(subjectNames.get(o));
+		}
+		System.out.println(!subjectNames.containsValue(shortName));
+		return !subjectNames.containsValue(shortName);
 	}
 }
