@@ -93,10 +93,6 @@ public class Schedule extends JComponent {
 		for(Component component : getComponents()) {
 			remove(component);
 		}
-		for(SubjectLabel subject : this.subjects) {
-			subject.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-			add(subject);
-		}
 		for(int i = -1; i < days.size(); i++) {
 			JLabel currentLabel = new JLabel();
 			currentLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -121,6 +117,11 @@ public class Schedule extends JComponent {
 				currentLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 				add(currentLabel);
 			}
+		}
+		for(SubjectLabel subject : this.subjects) {
+			subject.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+			add(subject);
+			setComponentZOrder(subject, 1);
 		}
 		repaint();
 		return this;
@@ -208,7 +209,8 @@ public class Schedule extends JComponent {
 			public void mouseClicked(MouseEvent e) {
 				if(editable) {
 					if(remove) {
-						subjects.remove((SubjectLabel) e.getSource());
+						subjects.remove(findSubject((SubjectLabel) e.getSource()));
+						GUIController.getInstance().setSchedule();
 					} else {
 						GUIController.getInstance().displayAddSubjectToSchedule(findSubject((SubjectLabel) e.getSource()));
 					}
@@ -260,8 +262,9 @@ public class Schedule extends JComponent {
 	
 	private SubjectLabel findSubject(SubjectLabel source) {
 		for(int i = 0; i < subjects.size(); i++) {
+			System.out.println(subjects.get(i).getBounds() + " - " + source.getBounds());
 			if(subjects.get(i).getBounds().equals(source.getBounds())) {
-				subjects.get(i).getSubject().getName();
+				System.out.println("YAY");
 				return subjects.get(i);
 			}
 		}
