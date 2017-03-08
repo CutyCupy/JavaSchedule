@@ -194,7 +194,7 @@ public class SchedulePanel extends JPanel {
 	}
 
 	public void setSchedule(Schedule schedule) {
-		setSize(schedule.getSize().width + 5, schedule.getSize().height + 30);
+		setSize(schedule.getSize().width + 5, schedule.getSize().height + 45);
 		add(schedule);
 	}
 }

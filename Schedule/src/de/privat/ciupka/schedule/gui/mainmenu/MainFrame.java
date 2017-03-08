@@ -17,11 +17,8 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void updateContentPane(Container contentPane) {
-		System.out.println("CP: " + contentPane.getSize());
 		setContentPane(contentPane);
-		System.out.println("CP: " + contentPane.getSize());
 		setSize(contentPane.getWidth(), contentPane.getHeight());
-		System.out.println("CP: " + contentPane.getSize());
 		setLocation(WindowHandler.placeFrameToMiddle(getHeight(), getWidth()));
 		repaint();
 	}
