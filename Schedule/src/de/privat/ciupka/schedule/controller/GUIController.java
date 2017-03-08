@@ -176,6 +176,9 @@ public class GUIController {
 	}
 
 	public void displayPanel(Container panel) {
+		if(panel.equals(mainMenu)) {
+			System.out.println(panel.getSize());
+		}
 		mainFrame.updateContentPane(panel);
 	}
 

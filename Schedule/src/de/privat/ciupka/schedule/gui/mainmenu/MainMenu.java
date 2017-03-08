@@ -20,13 +20,12 @@ public class MainMenu extends JPanel {
 	private GUIController guiCon;
 
 	public MainMenu() {
-		setBounds(0, 0, 350, 275);
-		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
 		guiCon = GUIController.getInstance();
 	}
 	
 	public MainMenu display() {
+		setBounds(0, 0, 350, 275);
 		if(!showed) {
 			createItems();
 			showed = true;
@@ -36,7 +35,6 @@ public class MainMenu extends JPanel {
 	}
 	
 	public void createItems() {
-		
 		JButton openB = new JButton("Open Schedule");
 		openB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

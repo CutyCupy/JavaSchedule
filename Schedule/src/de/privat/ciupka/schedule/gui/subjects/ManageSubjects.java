@@ -76,7 +76,7 @@ public class ManageSubjects extends JScrollPane {
 		if(!menuBar.equals(guiCon.getMainFrame().getMenuBar())) {
 			guiCon.getMainFrame().updateMenu(menuBar);
 		}
-		this.setSize(300, 400);
+		this.setSize(315, 400);
 		JPanel content = new JPanel();
 		content.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		GridBagLayout layout = new GridBagLayout();

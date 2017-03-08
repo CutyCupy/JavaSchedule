@@ -15,13 +15,13 @@ public class PropertieHandler {
 	
 	public static final String HOME = System.getProperty("user.home");
 	public static final String SEPERATOR = System.getProperty("file.separator");
-	public static final String SAVE_PATH
-	= HOME + SEPERATOR + "ciupkaschedule" + SEPERATOR;
+	public static final String SAVE_PATH = HOME + SEPERATOR + "ciupkaschedule" + SEPERATOR;
 	public static final String SUBJECT_PROPERTIES = SAVE_PATH + "subjects.cfg";
 	public static final String SUBJECT_NAMES_PROPERTIES = SAVE_PATH + "subjectnames.cfg";
 	
 	private Properties subjects;
 	private Properties subjectNames;
+	private ArrayList<Subject> loadedSubjects;
 	
 	private static PropertieHandler instance;
 	
@@ -52,22 +52,29 @@ public class PropertieHandler {
 	}
 	
 	public Subject loadSubject(String name) {
-		String short_name = subjectNames.getProperty(name);
-		Subject subject = null;
-		if(short_name != null) {
-			subject = new Subject();
-			String color = subjects.getProperty(short_name + "_color", "0");
-			String teacher = subjects.getProperty(short_name + "_teacher", "");
-			subject.setName(name);
-			subject.setShortName(short_name);
-			subject.setTeacher(teacher);
-			try {
-				subject.setColor(new Color(Integer.parseInt(color)));
-			} catch(Exception e) {
-				e.printStackTrace();
+		loadSubjects();
+		for(int i = 0; i < loadedSubjects.size(); i++) {
+			if(loadedSubjects.get(i).getName().equals(name)) {
+				return loadedSubjects.get(i);
 			}
 		}
-		return subject;
+		return null;
+//		String short_name = subjectNames.getProperty(name);
+//		Subject subject = null;
+//		if(short_name != null) {
+//			subject = new Subject();
+//			String color = subjects.getProperty(short_name + "_color", "0");
+//			String teacher = subjects.getProperty(short_name + "_teacher", "");
+//			subject.setName(name);
+//			subject.setShortName(short_name);
+//			subject.setTeacher(teacher);
+//			try {
+//				subject.setColor(new Color(Integer.parseInt(color)));
+//			} catch(Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		return subject;
 	}
 	
 	public void addSubject(Subject subject) {
@@ -75,6 +82,7 @@ public class PropertieHandler {
 		subjectNames.put(subject.getName(), shortName);
 		subjects.put(shortName + "_color", String.valueOf(subject.getColor().getRGB()));
 		subjects.put(shortName + "_teacher", subject.getTeacher());
+		loadedSubjects.add(subject);
 		saveSubjects();
 	}
 	
@@ -114,27 +122,31 @@ public class PropertieHandler {
 	}
 
 	public ArrayList<Subject> loadSubjects() {
-		ArrayList<Subject> result = new ArrayList<Subject>();
-		for(Object name : subjectNames.keySet()) {
-			Subject newSubject = readAndCreateSubject((String) name);
-			if(newSubject != null) {
-				result.add(newSubject);
-				System.out.println("NEW: " + newSubject);
+		if(loadedSubjects == null) {
+			loadedSubjects = new ArrayList<Subject>();
+			for(Object name : subjectNames.keySet()) {
+				Subject newSubject = readAndCreateSubject((String) name);
+				if(newSubject != null) {
+					loadedSubjects.add(newSubject);
+					System.out.println("NEW: " + newSubject);
+				}
 			}
 		}
-		return result;
+		return loadedSubjects;
 	}
 
 	public void removeSubject(Subject subject) {
 		subjectNames.remove(subject.getName());
+		loadedSubjects.remove(subject);
 		subjects.remove(subject.getShortName() + "_teacher");
 		subjects.remove(subject.getShortName() + "_color");
 	}
 	
 	public Subject getSubjectByName(String name, boolean showError) {
-		ArrayList<Subject> subjects = loadSubjects();
-		for(Subject subject : subjects) {
-			System.out.println(subject.getName() + " - " + name);
+		if(loadedSubjects == null) {
+			loadSubjects();
+		}
+		for(Subject subject : loadedSubjects) {
 			if(subject.getName().equals(name)) {
 				return subject;
 			}
@@ -147,11 +159,6 @@ public class PropertieHandler {
 
 	
 	public boolean checkUniqueShortName(String shortName) {
-		System.out.println(shortName);
-		for(Object o : subjectNames.keySet()) {
-			System.out.println(subjectNames.get(o));
-		}
-		System.out.println(!subjectNames.containsValue(shortName));
 		return !subjectNames.containsValue(shortName);
 	}
 }

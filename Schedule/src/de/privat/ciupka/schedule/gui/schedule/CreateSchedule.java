@@ -34,13 +34,13 @@ public class CreateSchedule extends JPanel {
 	private GUIController guiCon;
 	
 	public CreateSchedule() {
-		setBounds(0, 0, 390, 165);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
 		guiCon = GUIController.getInstance();
 	}
 	
 	public CreateSchedule display() {
+		setBounds(0, 0, 390, 185);
 		if(!showed) {
 			createItems();
 			showed = true;
