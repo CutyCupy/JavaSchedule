@@ -19,6 +19,8 @@ import de.privat.ciupka.schedule.controller.GUIController;
 
 public class SchedulePanel extends JPanel {
 
+	private static final long serialVersionUID = -6492579071611195643L;
+
 	private boolean showed;
 	
 	private Action addAction;
@@ -51,14 +53,22 @@ public class SchedulePanel extends JPanel {
 		menubar = new JMenuBar();
 		
 		//JMenus
-		JMenu file = new JMenu("Schedule");
+		JMenu file = new JMenu("File");
+		file.setMnemonic('f');
 		JMenu subjects = new JMenu("Subjects");
+		subjects.setMnemonic('u');
 		JMenu export = new JMenu("Export");
+		export.setMnemonic('e');
 		
 		//JMenuItems - file
 		JMenuItem open = new JMenuItem("Open Schedule");
+		open.setMnemonic('o');
 		JMenuItem save = new JMenuItem("Save Schedule");
+		save.setMnemonic('s');
+		JMenuItem restart = new JMenuItem("Restart Schedule");
+		restart.setMnemonic('t');
 		JMenuItem back = new JMenuItem("To Mainmenu");
+		back.setMnemonic('b');
 		
 		//JMenuItems - export (submenu of file)
 		JMenuItem exportPNG = new JMenuItem("Export to PNG");
@@ -76,7 +86,6 @@ public class SchedulePanel extends JPanel {
 		export.add(exportPDF);
 		export.add(exportXLS);
 		
-		//TODO: Edit action listener if needed
 		this.openAction = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -97,6 +106,12 @@ public class SchedulePanel extends JPanel {
 				guiCon.backToMainMenu();
 			}
 		};
+		restart.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				guiCon.restartSchedule();
+			}
+		});
 		back.addActionListener(returnBackAction);
 		
 		for(int i = 0; i < export.getItemCount(); i++) {
@@ -110,8 +125,11 @@ public class SchedulePanel extends JPanel {
 		
 		//JMenuItems - subjects
 		JMenuItem add = new JMenuItem("Add Subject");
+		add.setMnemonic('a');
 		JMenuItem remove = new JMenuItem("Remove Subject");
+		remove.setMnemonic('r');
 		JMenuItem manage = new JMenuItem("Manage Subjects");
+		manage.setMnemonic('m');
 		
 		this.addAction = new AbstractAction() {
 			@Override
@@ -136,6 +154,7 @@ public class SchedulePanel extends JPanel {
 		
 		file.add(open);
 		file.add(save);
+		file.add(restart);
 		file.addSeparator();
 		file.add(export);
 		file.addSeparator();

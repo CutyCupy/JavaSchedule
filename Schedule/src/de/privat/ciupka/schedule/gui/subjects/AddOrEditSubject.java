@@ -3,9 +3,6 @@ package de.privat.ciupka.schedule.gui.subjects;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
-
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,6 +19,8 @@ import de.privat.ciupka.schedule.logic.schedule.Subject;
 
 public class AddOrEditSubject extends JPanel {
 		
+	private static final long serialVersionUID = 3068184740279477407L;
+	
 	public static final int ADD = 0;
 	public static final int EDIT = 1;
 	
@@ -38,7 +37,6 @@ public class AddOrEditSubject extends JPanel {
 	private JSlider blueS;
 	private JButton addOrEditB;
 	private JButton cancelB;
-	private JButton removeB;
 	private JLabel colorL;
 	
 	

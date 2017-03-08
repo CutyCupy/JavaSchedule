@@ -1,24 +1,19 @@
 package de.privat.ciupka.schedule.gui.mainmenu;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import de.privat.ciupka.schedule.controller.Controller;
 import de.privat.ciupka.schedule.controller.GUIController;
 
-import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 
 public class MainMenu extends JPanel {
+
+
+	private static final long serialVersionUID = -5402416053729375460L;
 
 	private boolean showed;
 	

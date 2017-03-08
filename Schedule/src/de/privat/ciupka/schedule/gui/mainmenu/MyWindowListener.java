@@ -4,8 +4,17 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import de.privat.ciupka.schedule.controller.Controller;
+import de.privat.ciupka.schedule.controller.GUIController;
 
 public class MyWindowListener implements WindowListener {
+	
+	private Controller con;
+	private GUIController guiCon;
+	
+	public MyWindowListener() {
+		con = Controller.getInstance();
+		guiCon = GUIController.getInstance();
+	}
 
 	@Override
 	public void windowActivated(WindowEvent arg0) {
@@ -19,7 +28,10 @@ public class MyWindowListener implements WindowListener {
 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		Controller.getInstance().saveSubjects();
+		con.saveSubjects();
+		if(guiCon.getMainFrame().getContentPane().equals(guiCon.getSchedulePanel())) {
+			con.askSave();
+		}
 	}
 
 	@Override

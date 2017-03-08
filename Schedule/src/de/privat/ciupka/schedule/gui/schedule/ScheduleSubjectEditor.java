@@ -4,8 +4,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -21,12 +19,9 @@ import de.privat.ciupka.schedule.logic.schedule.Subject;
 
 public class ScheduleSubjectEditor extends JFrame {
 	
+	private static final long serialVersionUID = 7836747918093308861L;
+	
 	private boolean showed;
-	private boolean edited;
-	private String lastEndHour;
-	private String lastEndMinute;
-	private String lastStartHour;
-	private String lastStartMinute;
 	private GUIController guiCon;
 	
 	private SubjectLabel editedSubject;
@@ -50,10 +45,6 @@ public class ScheduleSubjectEditor extends JFrame {
 	public ScheduleSubjectEditor display() {
 		if(!showed) {
 			showed = true;
-			lastEndHour = "";
-			lastEndMinute = "";
-			lastStartHour = "";
-			lastStartMinute = "";
 			createItems();
 		}
 		resetComponents();
@@ -65,10 +56,6 @@ public class ScheduleSubjectEditor extends JFrame {
 	public ScheduleSubjectEditor display(SubjectLabel subject) {
 		if(!showed) {
 			showed = true;
-			lastEndHour = "";
-			lastEndMinute = "";
-			lastStartHour = "";
-			lastStartMinute = "";
 			createItems();
 		}
 		resetComponents(subject);
@@ -103,10 +90,10 @@ public class ScheduleSubjectEditor extends JFrame {
 		startMinuteT.setText(String.valueOf((int) subject.getStartTime() % 60));
 		endHourT.setText(String.valueOf((int) subject.getEndTime() / 60));
 		endMinuteT.setText(String.valueOf((int) subject.getEndTime() % 60));
-		lastEndHour = endHourT.getText();
-		lastEndMinute = endMinuteT.getText();
-		lastStartHour = startHourT.getText();
-		lastStartMinute = startMinuteT.getText();
+		endHourT.getText();
+		endMinuteT.getText();
+		startHourT.getText();
+		startMinuteT.getText();
 		roomT.setText(subject.getRoom());
 		focusHints();
 		subjectsCB.removeAllItems();

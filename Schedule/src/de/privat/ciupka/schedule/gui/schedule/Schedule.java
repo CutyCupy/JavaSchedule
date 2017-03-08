@@ -19,6 +19,8 @@ import de.privat.ciupka.schedule.logic.schedule.Time;
 
 public class Schedule extends JComponent {
 	
+	private static final long serialVersionUID = -6249327829663267917L;
+
 	public static final String[] ALL_DAYS = {"Monday", "Tuesday", "Wendesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	
 	private ArrayList<Time> times;
@@ -131,9 +133,31 @@ public class Schedule extends JComponent {
 		refreshSize();
 		int startTime = start.getTime();
 		int endTime = end.getTime();
-		System.out.println("Start: " + startTime + " - End: " + endTime);
 		if(startTime >= endTime || startTime < times.get(0).getTime() || endTime > times.get(times.size() - 1).getTime()) {
 			return false;
+		}
+		for(int i = 0; i < subjects.size(); i++) {
+			if(!day.equals(subjects.get(i).getDay())) {
+				continue;
+			}
+			boolean error = false;
+			int curStartTime = subjects.get(i).getStartTime();
+			int curEndTime = subjects.get(i).getEndTime();
+			if(curStartTime < startTime && startTime < curEndTime) {
+				System.out.println("curStartTime < startTime && startTime < curEndTime");
+				error = true;
+			} else if(curStartTime < endTime && endTime < curEndTime) {
+				System.out.println("curStartTime < endTime && endTime < curEndTime");
+				error = true;
+			} else if(curStartTime == startTime || curEndTime == endTime) {
+				System.out.println("curStartTime == startTime || curEndTime == endTime");
+				error = true;
+			}
+			if(error) {
+				if(!Messages.openYesNoDialog("Overlap!", "The subject " + subject.getName() + " would overlap with " + subjects.get(i).getSubject().getName() + " at " + day + "! Do you want to move on?")) {
+					return false;
+				}
+			}
 		}
 		int startY = 0;
 		int endY = 0;
@@ -161,27 +185,6 @@ public class Schedule extends JComponent {
 		}
 		SubjectLabel newLabel = new SubjectLabel(subject, start, end, room, day);
 		newLabel.setBounds(labelWidth*(days.indexOf(day)+1), startY, labelWidth, (endY - startY));
-		for(SubjectLabel currentLabel : subjects) {
-			boolean error = false;
-			int currentStart = currentLabel.getStartTime();
-			int currentEnd = currentLabel.getStartTime();
-			if(!currentLabel.getDay().equals(day)) {
-				continue;
-			}
-			if(currentStart <= start.getTime() && start.getTime() < currentEnd) {
-				error = true;
-			} else if(currentStart < end.getTime() && end.getTime() <= currentEnd) {
-				error = true;
-			} else if(start.getTime() <= currentStart && end.getTime() >= currentEnd) {
-				error = true;
-			}
-			if(error) {
-				if(!Messages.openYesNoDialog("Overlap!", "The subject " + subject.getName() + " would overlap with " + currentLabel.getSubject().getName() + " at " + day + "! Do you want to move on?")) {
-					System.out.println("Dont move on");
-					return false;
-				}
-			}
-		}
 		newLabel.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent e) {}
@@ -233,6 +236,11 @@ public class Schedule extends JComponent {
 		this.days = new ArrayList<String>();
 		this.subjects = new ArrayList<SubjectLabel>();
 		this.times = new ArrayList<Time>();
+	}
+	
+	public void currentReset() {
+		this.subjects = new ArrayList<SubjectLabel>();
+		generateSchedule();
 	}
 	
 	public boolean isRemove() {

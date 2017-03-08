@@ -11,6 +11,8 @@ import de.privat.ciupka.schedule.logic.schedule.Time;
 
 public class SubjectLabel extends JLabel {
 
+	private static final long serialVersionUID = -7541174598188523730L;
+	
 	private Subject subject;
 	private Time start;
 	private Time end;

@@ -10,12 +10,14 @@ import javax.swing.JTextField;
 /**
  * http://stackoverflow.com/questions/1738966/java-jtextfield-with-input-hint
  * last visited 28th February 2017
- * 
+ * Slightly edited by Alexander Ciupka
  * @author Bart Kiers
  *
  */
 class HintTextField extends JTextField implements FocusListener, KeyListener {
 
+	private static final long serialVersionUID = 7056596898890644848L;
+	
 	private final String hint;
 	private boolean showingHint;
 	private int min;

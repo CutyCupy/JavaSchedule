@@ -1,14 +1,9 @@
 package de.privat.ciupka.schedule.controller;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
-
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
 
 import de.privat.ciupka.schedule.gui.mainmenu.MainFrame;
 import de.privat.ciupka.schedule.gui.mainmenu.MainMenu;
@@ -21,8 +16,6 @@ import de.privat.ciupka.schedule.gui.schedule.ScheduleSubjectEditor;
 import de.privat.ciupka.schedule.gui.schedule.SubjectLabel;
 import de.privat.ciupka.schedule.gui.subjects.AddOrEditSubject;
 import de.privat.ciupka.schedule.gui.subjects.ManageSubjects;
-import de.privat.ciupka.schedule.logic.schedule.PropertieHandler;
-import de.privat.ciupka.schedule.logic.schedule.ScheduleHandler;
 import de.privat.ciupka.schedule.logic.schedule.Subject;
 import de.privat.ciupka.schedule.logic.schedule.Time;
 
@@ -133,7 +126,10 @@ public class GUIController {
 	}
 
 	public void restartSchedule() {
-		// TODO: Ask if sure and let the user create a new blank schedule
+		if(Messages.openYesNoDialog("Restart?", "Are you sure that you want to restart this schedule?")) {
+			controller.askSave();
+			schedule.currentReset();
+		}
 	}
 
 	public void openNewSchedule() {
@@ -262,5 +258,9 @@ public class GUIController {
 	public SchedulePanel setSchedule() {
 		schedulePanel.setSchedule(this.schedule.generateSchedule());
 		return schedulePanel.display();
+	}
+
+	public SchedulePanel getSchedulePanel() {
+		return this.schedulePanel;
 	}
 }

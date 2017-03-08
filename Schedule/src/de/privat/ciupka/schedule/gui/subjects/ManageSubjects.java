@@ -23,6 +23,9 @@ import de.privat.ciupka.schedule.logic.schedule.Subject;
 
 public class ManageSubjects extends JScrollPane {
 	
+
+	private static final long serialVersionUID = -2981834550721791099L;
+	
 	private GUIController guiCon;
 	private boolean remove;
 	private ArrayList<Subject> displayedSubjects;

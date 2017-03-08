@@ -3,9 +3,6 @@ package de.privat.ciupka.schedule.gui.schedule;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
-import javax.security.auth.callback.Callback;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -15,13 +12,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import de.privat.ciupka.schedule.controller.GUIController;
-import de.privat.ciupka.schedule.gui.mainmenu.MainFrame;
-import de.privat.ciupka.schedule.gui.mainmenu.MainMenu;
 import de.privat.ciupka.schedule.gui.mainmenu.WindowHandler;
-import de.privat.ciupka.schedule.gui.popups.ErrorMessages;
 
 public class CreateSchedule extends JPanel {
 	
+	private static final long serialVersionUID = -2470705690610007225L;
+
 	private boolean showed;
 	
 	private HintTextField endHourT;
