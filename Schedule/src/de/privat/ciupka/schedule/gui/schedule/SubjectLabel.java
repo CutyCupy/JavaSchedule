@@ -1,5 +1,6 @@
 package de.privat.ciupka.schedule.gui.schedule;
 
+import java.awt.Font;
 import java.util.HashMap;
 
 import javax.swing.JLabel;
@@ -42,6 +43,21 @@ public class SubjectLabel extends JLabel {
 		this.setHorizontalAlignment(SwingConstants.CENTER);
 		this.setVerticalAlignment(SwingConstants.CENTER);
 		setOpaque(true);
+	}
+	
+	@Override
+	public void setBounds(int x, int y, int width, int height) {
+		super.setBounds(x, y, width, height);
+		int rows = day == null ? 3 : 4;
+		while(getFontMetrics(getFont()).getHeight() * rows >= height) {
+			Font f = getFont().deriveFont((float) (getFont().getSize()-1.0));
+			if(f.getSize() <= 9) {
+				setText(convertToMultiline(subject.getName() + "\n" + (room == null ? subject.getTeacher() : room), true));
+				rows = 2;
+			}
+			setFont(f);
+			
+		}
 	}
 	
 	public static String convertToMultiline(String text, boolean center) {

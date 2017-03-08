@@ -122,6 +122,7 @@ public class ManageSubjects extends JScrollPane {
 			} else {
 				SubjectLabel currentScheduleL = new SubjectLabel(toDisplay.get(i));
 				currentScheduleL.setFont(new Font("Times New Roman", Font.BOLD, 15));
+				currentScheduleL.setBounds(0, 0, 145, 100);
 				currentScheduleL.setPreferredSize(new Dimension(145, 100));
 				currentScheduleL.setName(String.valueOf(i));
 				currentScheduleL.addMouseListener(new MouseListener() {
