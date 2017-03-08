@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import de.privat.ciupka.schedule.gui.popups.ErrorMessages;
+
 public class PropertieHandler {
 	
 	public static final String HOME = System.getProperty("user.home");
@@ -135,6 +137,7 @@ public class PropertieHandler {
 				return subject;
 			}
 		}
+		ErrorMessages.createErrorMessage("Subject not found!", "We couldnt find the subject " + name + "!");
 		return null;
 	}
 }

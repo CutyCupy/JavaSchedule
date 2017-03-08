@@ -98,17 +98,21 @@ public class ScheduleSubjectEditor extends JFrame {
 		focusHints();
 		subjectsCB.removeAllItems();
 		daysCB.removeAllItems();
+		int counter = 0;
 		for(Subject currentSubject : Controller.getInstance().loadAllSubjects()) {
 			subjectsCB.addItem(currentSubject.getName());
-			if(subject.getSubject().getName().equals(currentSubject.getName())) {
-				subjectsCB.setSelectedItem(currentSubject.getName());
+			if(currentSubject.getName().equals(subject.getSubject().getName())) {
+				subjectsCB.setSelectedIndex(counter);
 			}
+			counter++;
 		}
+		counter = 0;
 		for(String day : guiCon.getScheduleDays()) {
 			daysCB.addItem(day);
 			if(subject.getDay().equals(day)) {
-				subjectsCB.setSelectedItem(day);
+				daysCB.setSelectedIndex(counter);
 			}
+			counter++;
 		}
 		this.addB.setText("Edit");
 	}

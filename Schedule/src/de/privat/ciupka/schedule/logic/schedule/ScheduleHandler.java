@@ -141,9 +141,12 @@ public class ScheduleHandler {
 				Time end = new Time();
 				start.setTime(currentObject.get("start").getAsInt());
 				end.setTime(currentObject.get("end").getAsInt());
-				guiCon.getSchedule().addSubjectLabelBounds(
-						controller.getPropertieHandler().getSubjectByName(currentObject.get("name").getAsString()),
-						start, end, currentObject.get("day").getAsString(), currentObject.get("room").getAsString());
+				Subject subject = controller.getPropertieHandler().getSubjectByName(currentObject.get("name").getAsString());
+				if(subject != null) {
+					guiCon.getSchedule().addSubjectLabelBounds(subject,
+							start, end, currentObject.get("day").getAsString(), currentObject.get("room").getAsString());
+					
+				}
 			}
 			guiCon.displayPanel(guiCon.setSchedule());
 			guiCon.getSchedule().setEditable(true);
@@ -151,7 +154,6 @@ public class ScheduleHandler {
 	}
 
 	public void exportImage(String type) {
-		//TODO: Update the code to be more beautiful ^^
 		Dimension size = guiCon.getSchedule().getSize();
 		BufferedImage image = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = image.createGraphics();

@@ -19,6 +19,11 @@ import de.privat.ciupka.schedule.gui.subjects.ManageSubjects;
 import de.privat.ciupka.schedule.logic.schedule.Subject;
 import de.privat.ciupka.schedule.logic.schedule.Time;
 
+/**
+ * GUIController class which is the interface between the GUI and the controller + logic.
+ * @author Alexander
+ *
+ */
 public class GUIController {
 
 	private static GUIController instance;
@@ -34,8 +39,15 @@ public class GUIController {
 	private AddOrEditSubject addSubject;
 	private ScheduleSubjectEditor addSubjectToSchedule;
 
+	/**
+	 * Private Singleton-Pattern constructor.
+	 */
 	private GUIController() {}
 
+	/**
+	 * This function creates the only object of this class and returns it.
+	 * @return GUIController - only instance of this class.
+	 */
 	public static GUIController getInstance() {
 		if (instance == null) {
 			instance = new GUIController();
@@ -44,6 +56,9 @@ public class GUIController {
 		return instance;
 	}
 
+	/**
+	 * Constructor like function which creates all the necessary attributes and start the GUI.
+	 */
 	public void start() {
 		controller = Controller.getInstance();
 		mainFrame = new MainFrame();
@@ -57,6 +72,20 @@ public class GUIController {
 		mainFrame.updateContentPane(mainMenu.display());
 	}
 
+	/**
+	 * Creates, generates and displays a new Schedule based on the given parameters.
+	 * @param startHour - The first our that will be displayed 
+	 * @param startMinute
+	 * @param endHour
+	 * @param endMinute
+	 * @param intervalHour
+	 * @param intervalMinute
+	 * @param startDay
+	 * @param endDay
+	 * @param height
+	 * @param width
+	 * @param editable
+	 */
 	public void createSchedule(String startHour, String startMinute, String endHour, String endMinute,
 			String intervalHour, String intervalMinute, String startDay, String endDay, String height, String width,
 			boolean editable) {
@@ -83,7 +112,7 @@ public class GUIController {
 				end.setTime(endTime);
 			}
 			int currentTime = start.getTime();
-			while (currentTime <= end.getTime()) {
+			while (currentTime < end.getTime()) {
 				Time currentT = new Time();
 				currentT.setTime(currentTime);
 				schedule.addTime(currentT);
@@ -221,9 +250,12 @@ public class GUIController {
 			Time end = new Time();
 			start.setTime(Integer.parseInt(startHour), Integer.parseInt(startMinute));
 			end.setTime(Integer.parseInt(endHour), Integer.parseInt(endMinute));
-			schedule.addSubjectLabelBounds(controller.getPropertieHandler().getSubjectByName(subjectName), start, end, day, room);
-			schedule.generateSchedule();
-			this.addSubjectToSchedule.setVisible(false);
+			Subject subject = controller.getPropertieHandler().getSubjectByName(subjectName);
+			if(subject != null) {
+				schedule.addSubjectLabelBounds(subject, start, end, day, room);
+				schedule.generateSchedule();
+				this.addSubjectToSchedule.setVisible(false);
+			}
 		} catch(Exception e) {
 			ErrorMessages.createErrorMessage("Add Subject error!", "Please enter a valid Time for the subject.");
 		}
