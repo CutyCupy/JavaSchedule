@@ -1,6 +1,7 @@
 package de.privat.ciupka.schedule.gui.schedule;
 
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.util.HashMap;
 
 import javax.swing.JLabel;
@@ -48,12 +49,13 @@ public class SubjectLabel extends JLabel {
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
 		super.setBounds(x, y, width, height);
-		int rows = day == null ? 3 : 4;
+		int rows = calculateRows();
 		while(getFontMetrics(getFont()).getHeight() * rows >= height) {
 			Font f = getFont().deriveFont((float) (getFont().getSize()-1.0));
 			if(f.getSize() <= 9) {
 				setText(convertToMultiline(subject.getName() + "\n" + (room == null ? subject.getTeacher() : room), true));
-				rows = 2;
+				rows = 1 + calculateRows(subject.getName());
+				rows = 1 + (room == null ? calculateRows(subject.getTeacher()) : calculateRows(room));
 			}
 			setFont(f);
 			
@@ -109,5 +111,22 @@ public class SubjectLabel extends JLabel {
 	
 	public Time getEndTimeAsTime() {
 		return this.end;
+	}
+	
+	private int calculateRows() {
+		int rows = 0;
+		FontMetrics fm = getFontMetrics(getFont());
+		rows += 1 + fm.stringWidth(subject.getName()) / getWidth();
+		rows += 1 + fm.stringWidth(subject.getShortName()) / getWidth();
+		rows += 1 + fm.stringWidth(subject.getTeacher()) / getWidth();
+		rows += day == null ? 0 : 1;
+		return rows;
+	}
+	
+	private int calculateRows(String string) {
+		int rows = 0;
+		FontMetrics fm = getFontMetrics(getFont());
+		rows += 1 + fm.stringWidth(string) / getWidth();
+		return rows;
 	}
 }
