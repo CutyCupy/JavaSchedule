@@ -38,6 +38,7 @@ public class SubjectLabel extends JLabel {
 	
 	public SubjectLabel(Subject subject) {
 		super();
+		this.subject = subject;
 		this.setText(convertToMultiline(subject.getName() + "\n" + subject.getShortName() + "\n" + subject.getTeacher(), true));
 		this.setBackground(subject.getColor());
 		this.setForeground(GUIController.getForegroundColor(subject.getColor().getRed(), subject.getColor().getGreen(), subject.getColor().getBlue()));
