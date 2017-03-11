@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import de.privat.ciupka.schedule.controller.GUIController;
+import de.privat.ciupka.schedule.gui.popups.ErrorMessages;
 import de.privat.ciupka.schedule.gui.popups.Messages;
 import de.privat.ciupka.schedule.logic.schedule.Subject;
 import de.privat.ciupka.schedule.logic.schedule.Time;
@@ -32,6 +33,8 @@ public class Schedule extends JComponent {
 	private boolean editable;
 	private boolean remove;
 	private GUIController guiCon;
+
+	private int intervall;
 	
 	
 	public Schedule(int width, int height) {
@@ -47,6 +50,10 @@ public class Schedule extends JComponent {
 		this.days = new ArrayList<String>();
 		this.subjects = new ArrayList<SubjectLabel>();
 		guiCon = GUIController.getInstance();
+	}
+	
+	public void setIntervall(int intervall) {
+		this.intervall = intervall;
 	}
 	
 	public void setTimes(Time[] newTimes) {
@@ -75,17 +82,15 @@ public class Schedule extends JComponent {
 		if(time.setTime(hour, minute)) {
 			this.times.add(time);
 		}
-		refreshSize();
 	}
 	
 	public void addDay(String day) {
 		this.days.add(day);
-		refreshSize();
 	}
 	
 	private void refreshSize() {
 		labelWidth = this.getWidth() / (this.days.size() + 1);
-		labelHeight = this.getHeight() / (this.times.size() + 1);
+		labelHeight = this.getHeight() / (this.times.size());
 	}
 	
 	public Schedule generateSchedule(int width, int height) {
@@ -95,9 +100,7 @@ public class Schedule extends JComponent {
 	
 	public Schedule generateSchedule() {
 		refreshSize();
-		for(Component component : getComponents()) {
-			remove(component);
-		}
+		removeAll();
 		for(int i = -1; i < days.size(); i++) {
 			JLabel currentLabel = new JLabel();
 			currentLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -129,7 +132,7 @@ public class Schedule extends JComponent {
 			currentLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 			add(currentLabel);
 		}
-		for(int i = 0; i < times.size(); i++) {
+		for(int i = 0; i < times.size() - 1; i++) {
 			JLabel currentLabel = new JLabel(times.get(i).toString());
 			currentLabel.setName(String.valueOf(i));
 			currentLabel.setBounds(0, labelHeight * (i + 1), labelWidth, labelHeight);
@@ -157,7 +160,7 @@ public class Schedule extends JComponent {
 			add(currentLabel);
 		}
 		for(int i = 1; i < days.size() + 1; i++) {
-			for(int j = 1; j < times.size() + 1; j++) {
+			for(int j = 1; j < times.size(); j++) {
 				JLabel currentLabel = new JLabel();
 				currentLabel.setBounds(labelWidth * i,  labelHeight * j, labelWidth, labelHeight);
 				currentLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
@@ -197,9 +200,15 @@ public class Schedule extends JComponent {
 	
 	public boolean addSubjectLabelBounds(Subject subject, Time start, Time end, String day, String room) {
 		refreshSize();
+		calculateInterval();
 		int startTime = start.getTime();
 		int endTime = end.getTime();
-		if(startTime >= endTime || startTime < times.get(0).getTime() || endTime > times.get(times.size() - 1).getTime()) {
+		if(startTime >= endTime || startTime < times.get(0).getTime() || endTime > times.get(times.size() - 1).getTime() + intervall) {
+			ErrorMessages.createErrorMessage("Valid time error!", "Please enter a valid time for the new Subject.");
+			return false;
+		}
+		if(end.getTime() - start.getTime() < intervall/2) {
+			ErrorMessages.createErrorMessage("Subject size error!", "Please create a new schedule with a closer interval!");
 			return false;
 		}
 		for(int i = 0; i < subjects.size(); i++) {
@@ -232,8 +241,7 @@ public class Schedule extends JComponent {
 			if(times.get(i).getTime() >= startTime) {
 				startIndex = i;
 				if(i != 0) {
-					int delta = times.get(i).getTime() - times.get(i - 1).getTime();
-					float percentage = (float) (((startTime - times.get(i - 1).getTime())*1.0) / delta);
+					float percentage = (float) (((startTime - times.get(i - 1).getTime())*1.0) / intervall);
 					startY = (int) (i * labelHeight + percentage*labelHeight);
 					break;
 				} else if(times.get(i).getTime() != startTime) {
@@ -243,8 +251,7 @@ public class Schedule extends JComponent {
 		}
 		for(int i = startIndex; i < times.size(); i++) {
 			if(times.get(i).getTime() >= endTime) {
-				int delta = times.get(i).getTime() - times.get(i-1).getTime();
-				float percentage = (float) (((endTime - times.get(i-1).getTime()*1.0))/delta);
+				float percentage = (float) (((endTime - times.get(i-1).getTime()*1.0))/intervall);
 				endY = (int) (i * labelHeight + percentage*labelHeight);
 				break;
 			}
@@ -370,5 +377,15 @@ public class Schedule extends JComponent {
 	
 	private void setDay(String day) {
 		guiCon.getAddSubjectToSchedule().setSelectedDay(day);
+	}
+
+	public void calculateInterval() {
+		System.out.println("intervall");
+		if(times.size() > 1) {
+			this.intervall = times.get(1).getTime() - times.get(0).getTime();
+ 		} else {
+ 			this.intervall = 0;
+ 		}
+		System.out.println(this.intervall);
 	}
 }

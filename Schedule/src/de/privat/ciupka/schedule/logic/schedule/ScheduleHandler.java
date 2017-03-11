@@ -148,6 +148,7 @@ public class ScheduleHandler {
 					
 				}
 			}
+			guiCon.getSchedule().calculateInterval();
 			guiCon.displayPanel(guiCon.setSchedule());
 			guiCon.getSchedule().setEditable(true);
 		}

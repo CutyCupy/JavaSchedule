@@ -112,12 +112,13 @@ public class GUIController {
 				end.setTime(endTime);
 			}
 			int currentTime = start.getTime();
-			while (currentTime < end.getTime()) {
+			while (currentTime <= end.getTime()) {
 				Time currentT = new Time();
 				currentT.setTime(currentTime);
 				schedule.addTime(currentT);
 				currentTime += intervalTime;
 			}
+			this.schedule.setIntervall(intervalTime);
 			int startDayIndex = -1;
 			int endDayIndex = -1;
 			for (int i = 0; i < Schedule.ALL_DAYS.length; i++) {
@@ -150,7 +151,6 @@ public class GUIController {
 	}
 	
 	public void displayAddSubjectToSchedule(SubjectLabel source) {
-		System.out.println(source.getStartTime() + " - " + source.getEndTime() + " - " + source.getSubject());
 		this.addSubjectToSchedule.display(source);
 	}
 
@@ -254,14 +254,16 @@ public class GUIController {
 	}
 
 	public boolean addSubjectToSchedule(String startMinute, String startHour, String endMinute, String endHour, String room, String subjectName, String day) {
+		boolean result;
 		try {
+			schedule.calculateInterval();
 			Time start = new Time();
 			Time end = new Time();
 			start.setTime(Integer.parseInt(startHour), Integer.parseInt(startMinute));
 			end.setTime(Integer.parseInt(endHour), Integer.parseInt(endMinute));
 			Subject subject = controller.getPropertieHandler().getSubjectByName(subjectName, true);
 			if(subject != null) {
-				schedule.addSubjectLabelBounds(subject, start, end, day, room);
+				result = schedule.addSubjectLabelBounds(subject, start, end, day, room);
 				schedule.generateSchedule();
 				this.addSubjectToSchedule.setVisible(false);
 			} else {
@@ -271,7 +273,7 @@ public class GUIController {
 			ErrorMessages.createErrorMessage("Add Subject error!", "Please enter a valid Time for the subject.");
 			return false;
 		}
-		return true;
+		return result;
 	}
 	
 	public ArrayList<String> getScheduleDays() {

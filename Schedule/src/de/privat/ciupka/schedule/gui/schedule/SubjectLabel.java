@@ -53,13 +53,14 @@ public class SubjectLabel extends JLabel {
 		int rows = calculateRows();
 		while(getFontMetrics(getFont()).getHeight() * rows >= height) {
 			Font f = getFont().deriveFont((float) (getFont().getSize()-1.0));
-			if(f.getSize() <= 9) {
-				setText(convertToMultiline(subject.getName() + "\n" + (room == null ? subject.getTeacher() : room), true));
+			if(f.getSize() == 9) {
+				String newText = subject.getName() + " - " + subject.getShortName() + "\n" + subject.getTeacher();
+				newText += room == null ? "" : " - " + room;
+				setText(convertToMultiline(newText, true));
 				rows = 1 + calculateRows(subject.getName());
 				rows = 1 + (room == null ? calculateRows(subject.getTeacher()) : calculateRows(room));
 			}
 			setFont(f);
-			
 		}
 	}
 	
