@@ -3,6 +3,7 @@ package de.privat.ciupka.schedule.gui.subjects;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -159,6 +160,7 @@ public class AddOrEditSubject extends JPanel {
 
 		cancelB = new JButton("Cancel");
 		cancelB.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				guiCon.displayPanel(
 						guiCon.getManageSubjects().displaySubjects(Controller.getInstance().loadAllSubjects()));
@@ -172,7 +174,6 @@ public class AddOrEditSubject extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (guiCon.addSubject(nameT.getText(), shortNameT.getText(), teacherT.getText(),
 						colorL.getBackground())) {
-					System.out.println("Hä");
 					guiCon.displayPanel(guiCon.getManageSubjects().displaySubjects(Controller.getInstance().loadAllSubjects()));
 				}
 			}

@@ -26,20 +26,20 @@ import de.privat.ciupka.schedule.gui.schedule.SubjectLabel;
 import de.privat.ciupka.schedule.logic.schedule.Subject;
 
 public class ManageSubjects extends JScrollPane {
-	
+
 
 	private static final long serialVersionUID = -2981834550721791099L;
-	
+
 	private GUIController guiCon;
 	private boolean remove;
 	private ArrayList<Subject> displayedSubjects;
 	private boolean showed;
 	private JMenuBar menuBar;
-		
+
 	public ManageSubjects() {
 		guiCon = GUIController.getInstance();
 	}
-	
+
 	public ManageSubjects displaySubjects(ArrayList<Subject> toDisplay) {
 		displayedSubjects = toDisplay;
 		if(!showed) {
@@ -69,7 +69,7 @@ public class ManageSubjects extends JScrollPane {
 			manageMenu.add(back);
 			manageMenu.add(add);
 			manageMenu.add(delete);
-			
+
 			menuBar.add(manageMenu);
 			showed = true;
 		}
@@ -81,8 +81,9 @@ public class ManageSubjects extends JScrollPane {
 		content.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		GridBagLayout layout = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
+		content.setLocation(0, 0);
 		content.setLayout(layout);
-		
+
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.ipadx = 0;
 		for(int i = 0; i < toDisplay.size() + 1; i++) {
@@ -96,20 +97,20 @@ public class ManageSubjects extends JScrollPane {
 				addSubject.addMouseListener(new MouseListener() {
 					@Override
 					public void mouseReleased(MouseEvent e) {}
-					
+
 					@Override
 					public void mousePressed(MouseEvent e) {}
-					
+
 					@Override
 					public void mouseExited(MouseEvent e) {
 						((JButton) e.getSource()).setBackground(((JButton) e.getSource()).getBackground().brighter());
 					}
-					
+
 					@Override
 					public void mouseEntered(MouseEvent e) {
 						((JButton) e.getSource()).setBackground(((JButton) e.getSource()).getBackground().darker());
 					}
-					
+
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						if(!remove) {
@@ -117,32 +118,29 @@ public class ManageSubjects extends JScrollPane {
 						}
 					}
 				});
-				layout.setConstraints(addSubject, gbc);
-				content.add(addSubject);
+				content.add(addSubject, gbc);
 			} else {
-				System.out.println(toDisplay.get(i).getName());
 				SubjectLabel currentScheduleL = new SubjectLabel(toDisplay.get(i));
 				currentScheduleL.setFont(new Font("Times New Roman", Font.BOLD, 15));
-				currentScheduleL.setBounds(0, 0, 145, 100);
 				currentScheduleL.setPreferredSize(new Dimension(145, 100));
 				currentScheduleL.setName(String.valueOf(i));
 				currentScheduleL.addMouseListener(new MouseListener() {
 					@Override
 					public void mouseReleased(MouseEvent e) {}
-					
+
 					@Override
 					public void mousePressed(MouseEvent e) {}
-					
+
 					@Override
 					public void mouseExited(MouseEvent e) {
 						((SubjectLabel) e.getSource()).setBackground(((SubjectLabel) e.getSource()).getBackground().brighter());
 					}
-					
+
 					@Override
 					public void mouseEntered(MouseEvent e) {
 						((SubjectLabel) e.getSource()).setBackground(((SubjectLabel) e.getSource()).getBackground().darker());
 					}
-					
+
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						if(!remove) {
@@ -154,17 +152,16 @@ public class ManageSubjects extends JScrollPane {
 						}
 					}
 				});
-				layout.setConstraints(currentScheduleL, gbc);
-				content.add(currentScheduleL);
+				content.add(currentScheduleL, gbc);
 			}
 		}
-		
+
 		this.setViewportView(content);
 		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		return this;
 	}
-	
+
 	public void swapRemove() {
 		remove = !remove;
 		if(remove) {

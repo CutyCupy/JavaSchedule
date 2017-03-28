@@ -74,7 +74,7 @@ public class GUIController {
 
 	/**
 	 * Creates, generates and displays a new Schedule based on the given parameters.
-	 * @param startHour - The first our that will be displayed 
+	 * @param startHour - The first our that will be displayed
 	 * @param startMinute
 	 * @param endHour
 	 * @param endMinute
@@ -149,20 +149,24 @@ public class GUIController {
 	public void displayAddSubjectToSchedule() {
 		this.addSubjectToSchedule.display();
 	}
-	
+
 	public void displayAddSubjectToSchedule(SubjectLabel source) {
 		this.addSubjectToSchedule.display(source);
 	}
 
 	public void restartSchedule() {
 		if(Messages.openYesNoDialog("Restart?", "Are you sure that you want to restart this schedule?")) {
-			controller.askSave();
+			if(this.schedule.isEdited()) {
+				controller.askSave();
+			}
 			schedule.currentReset();
 		}
 	}
 
 	public void openNewSchedule() {
-		controller.askSave();
+		if(this.schedule.isEdited()) {
+			controller.askSave();
+		}
 		controller.loadSchedule();
 	}
 
@@ -171,7 +175,9 @@ public class GUIController {
 	}
 
 	public void backToMainMenu() {
-		controller.askSave();
+		if(this.schedule.isEdited()) {
+			controller.askSave();
+		}
 		this.displayPanel(mainMenu.display());
 	}
 
@@ -275,7 +281,7 @@ public class GUIController {
 		}
 		return result;
 	}
-	
+
 	public ArrayList<String> getScheduleDays() {
 		return schedule.getDays();
 	}

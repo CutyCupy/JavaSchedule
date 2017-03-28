@@ -7,10 +7,10 @@ import de.privat.ciupka.schedule.controller.Controller;
 import de.privat.ciupka.schedule.controller.GUIController;
 
 public class MyWindowListener implements WindowListener {
-	
+
 	private Controller con;
 	private GUIController guiCon;
-	
+
 	public MyWindowListener() {
 		con = Controller.getInstance();
 		guiCon = GUIController.getInstance();
@@ -30,7 +30,9 @@ public class MyWindowListener implements WindowListener {
 	public void windowClosing(WindowEvent arg0) {
 		con.saveSubjects();
 		if(guiCon.getMainFrame().getContentPane().equals(guiCon.getSchedulePanel())) {
-			con.askSave();
+			if(guiCon.getSchedule().isEdited()) {
+				con.askSave();
+			}
 		}
 	}
 

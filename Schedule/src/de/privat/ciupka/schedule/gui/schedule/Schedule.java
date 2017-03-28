@@ -1,7 +1,6 @@
 package de.privat.ciupka.schedule.gui.schedule;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -19,15 +18,15 @@ import de.privat.ciupka.schedule.logic.schedule.Subject;
 import de.privat.ciupka.schedule.logic.schedule.Time;
 
 public class Schedule extends JComponent {
-	
+
 	private static final long serialVersionUID = -6249327829663267917L;
 
 	public static final String[] ALL_DAYS = {"Monday", "Tuesday", "Wendesday", "Thursday", "Friday", "Saturday", "Sunday"};
-	
+
 	private ArrayList<Time> times;
 	private ArrayList<String> days;
 	private ArrayList<SubjectLabel> subjects;
-	
+
 	private int labelHeight;
 	private int labelWidth;
 	private boolean editable;
@@ -35,8 +34,10 @@ public class Schedule extends JComponent {
 	private GUIController guiCon;
 
 	private int intervall;
-	
-	
+
+	private boolean edited;
+
+
 	public Schedule(int width, int height) {
 		this.times = new ArrayList<Time>();
 		this.days = new ArrayList<String>();
@@ -44,18 +45,18 @@ public class Schedule extends JComponent {
 		this.setSize(width, height);
 		guiCon = GUIController.getInstance();
 	}
-	
+
 	public Schedule() {
 		this.times = new ArrayList<Time>();
 		this.days = new ArrayList<String>();
 		this.subjects = new ArrayList<SubjectLabel>();
 		guiCon = GUIController.getInstance();
 	}
-	
+
 	public void setIntervall(int intervall) {
 		this.intervall = intervall;
 	}
-	
+
 	public void setTimes(Time[] newTimes) {
 		this.times.clear();
 		for(Time newTime : newTimes) {
@@ -63,7 +64,7 @@ public class Schedule extends JComponent {
 		}
 		refreshSize();
 	}
-	
+
 	public void setDays(String[] newDays) {
 		this.days.clear();
 		for(String newDay : newDays) {
@@ -71,33 +72,33 @@ public class Schedule extends JComponent {
 		}
 		refreshSize();
 	}
-	
+
 	public void addTime(Time time) {
 		this.times.add(time);
 		refreshSize();
 	}
-	
+
 	public void addTime(int hour, int minute) {
 		Time time = new Time();
 		if(time.setTime(hour, minute)) {
 			this.times.add(time);
 		}
 	}
-	
+
 	public void addDay(String day) {
 		this.days.add(day);
 	}
-	
+
 	private void refreshSize() {
 		labelWidth = this.getWidth() / (this.days.size() + 1);
 		labelHeight = this.getHeight() / (this.times.size());
 	}
-	
+
 	public Schedule generateSchedule(int width, int height) {
 		setSize(width, height);
 		return generateSchedule();
 	}
-	
+
 	public Schedule generateSchedule() {
 		refreshSize();
 		removeAll();
@@ -111,16 +112,16 @@ public class Schedule extends JComponent {
 				currentLabel.addMouseListener(new MouseListener() {
 					@Override
 					public void mouseReleased(MouseEvent e) {}
-					
+
 					@Override
 					public void mousePressed(MouseEvent e) {}
-					
+
 					@Override
 					public void mouseExited(MouseEvent e) {}
-					
+
 					@Override
 					public void mouseEntered(MouseEvent e) {}
-					
+
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						guiCon.displayAddSubjectToSchedule();
@@ -140,16 +141,16 @@ public class Schedule extends JComponent {
 			currentLabel.addMouseListener(new MouseListener() {
 				@Override
 				public void mouseReleased(MouseEvent e) {}
-				
+
 				@Override
 				public void mousePressed(MouseEvent e) {}
-				
+
 				@Override
 				public void mouseExited(MouseEvent e) {}
-				
+
 				@Override
 				public void mouseEntered(MouseEvent e) {}
-				
+
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					int index = Integer.parseInt(e.getComponent().getName());
@@ -168,16 +169,16 @@ public class Schedule extends JComponent {
 				currentLabel.addMouseListener(new MouseListener() {
 					@Override
 					public void mouseReleased(MouseEvent e) {}
-					
+
 					@Override
 					public void mousePressed(MouseEvent e) {}
-					
+
 					@Override
 					public void mouseExited(MouseEvent e) {}
-					
+
 					@Override
 					public void mouseEntered(MouseEvent e) {}
-					
+
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						guiCon.displayAddSubjectToSchedule();
@@ -197,7 +198,7 @@ public class Schedule extends JComponent {
 		repaint();
 		return this;
 	}
-	
+
 	public boolean addSubjectLabelBounds(Subject subject, Time start, Time end, String day, String room) {
 		refreshSize();
 		calculateInterval();
@@ -261,10 +262,10 @@ public class Schedule extends JComponent {
 		newLabel.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent e) {}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				if(editable) {
@@ -272,7 +273,7 @@ public class Schedule extends JComponent {
 					source.setBackground(source.getBackground().brighter());
 				}
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				if(editable) {
@@ -280,7 +281,7 @@ public class Schedule extends JComponent {
 					source.setBackground(source.getBackground().darker());
 				}
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(editable) {
@@ -296,30 +297,31 @@ public class Schedule extends JComponent {
 		this.subjects.add(newLabel);
 		return true;
 	}
-	
+
 	public boolean isEditable() {
 		return editable;
 	}
-	
+
 	public void setEditable(boolean editable) {
 		this.editable = editable;
 	}
-	
+
 	public void reset() {
 		this.days = new ArrayList<String>();
 		this.subjects = new ArrayList<SubjectLabel>();
 		this.times = new ArrayList<Time>();
+		this.edited = false;
 	}
-	
+
 	public void currentReset() {
 		this.subjects = new ArrayList<SubjectLabel>();
 		generateSchedule();
 	}
-	
+
 	public boolean isRemove() {
 		return remove;
 	}
-	
+
 	public void swapRemove() {
 		remove = !remove;
 		if(remove) {
@@ -328,7 +330,7 @@ public class Schedule extends JComponent {
 			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 	}
-	
+
 	public ArrayList<String> getDays() {
 		return this.days;
 	}
@@ -336,11 +338,11 @@ public class Schedule extends JComponent {
 	public ArrayList<Time> getTimes() {
 		return this.times;
 	}
-	
+
 	public ArrayList<SubjectLabel> getSubjects() {
 		return this.subjects;
 	}
-	
+
 	private SubjectLabel findSubject(SubjectLabel source) {
 		for(int i = 0; i < subjects.size(); i++) {
 			System.out.println(subjects.get(i).getBounds() + " - " + source.getBounds());
@@ -351,7 +353,7 @@ public class Schedule extends JComponent {
 		}
 		return null;
 	}
-	
+
 	public void editSubject(SubjectLabel oldSL, SubjectLabel newSL) {
 		this.subjects.remove(oldSL);
 		if(!addSubjectLabelBounds(newSL.getSubject(), newSL.getStartTimeAsTime(), newSL.getEndTimeAsTime(), newSL.getDay(), newSL.getRoom())) {
@@ -360,7 +362,7 @@ public class Schedule extends JComponent {
 		this.generateSchedule();
 		this.repaint();
 	}
-	
+
 	private void setTime(int index) {
 		if(index != times.size() - 1) {
 			guiCon.getAddSubjectToSchedule().setStartTime(times.get(index).getTime());
@@ -374,7 +376,7 @@ public class Schedule extends JComponent {
 			}
 		}
 	}
-	
+
 	private void setDay(String day) {
 		guiCon.getAddSubjectToSchedule().setSelectedDay(day);
 	}
@@ -387,5 +389,13 @@ public class Schedule extends JComponent {
  			this.intervall = 0;
  		}
 		System.out.println(this.intervall);
+	}
+
+	public void setEdited(boolean isEdited) {
+		this.edited = isEdited;
+	}
+
+	public boolean isEdited() {
+		return this.edited;
 	}
 }

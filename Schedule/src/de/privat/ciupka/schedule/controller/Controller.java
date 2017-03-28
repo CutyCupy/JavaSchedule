@@ -15,17 +15,17 @@ import de.privat.ciupka.schedule.logic.schedule.Subject;
  *
  */
 public class Controller {
-	
+
 	private static Controller instance;
-	
+
 	private PropertieHandler propertieHandler;
 	private ScheduleHandler scheduleHandler;
-	
+
 	/**
 	 * Private constructor to create a Singleton pattern.
 	 */
 	private Controller() {}
-	
+
 	/**
 	 * Controllers getInstance() method will return the only instance of this class.
 	 * Checks if the static instance attribute is null and if so, it will create a new instance of Controller.
@@ -39,7 +39,7 @@ public class Controller {
 		}
 		return instance;
 	}
-	
+
 	/**
 	 * Constructor like function, which creates the important attributes and loads all subjects.
 	 */
@@ -48,7 +48,7 @@ public class Controller {
 		scheduleHandler = new ScheduleHandler();
 		loadAllSubjects();
 	}
-	
+
 	/**
 	 * Calls the loadSubjects function of the PropertieHandler to load all the saved Subjects.
 	 * @return ArrayList(Subject) - Contains all the saved Subjects.
@@ -63,7 +63,7 @@ public class Controller {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Adds a newly created Subject.
 	 * @param subject - newly created Subject object.
@@ -71,7 +71,7 @@ public class Controller {
 	public void addSubject(Subject subject) {
 		propertieHandler.addSubject(subject);
 	}
-	
+
 	/**
 	 * Edits an existing subject.
 	 * @param oldSubject - old Subject that will be edited.
@@ -80,7 +80,7 @@ public class Controller {
 	public void editSubject(Subject oldSubject, Subject newSubject) {
 		propertieHandler.editSubject(oldSubject, newSubject);
 	}
-	
+
 	/**
 	 * Adds the given subjects to the current subjects and saves them into the .cfg file.
 	 * @param subjects - ArrayList(Subject) which contains all the subjects that will be added + saved.
@@ -91,7 +91,7 @@ public class Controller {
 		}
 		saveSubjects();
 	}
-	
+
 	/**
 	 * Saves all the current subjects in the .cfg file.
 	 */
@@ -106,7 +106,7 @@ public class Controller {
 	public void removeSubject(Subject subject) {
 		propertieHandler.removeSubject(subject);
 	}
-	
+
 	/**
 	 * Calls the necessary function to export the current schedule as image (.type format).
 	 * @param type - File ending without '.'.
@@ -114,14 +114,14 @@ public class Controller {
 	public void exportImage(String type) {
 		scheduleHandler.exportImage(type);
 	}
-	
+
 	/**
 	 * TODO: Not implemented.
 	 */
 	public void exportToPDF() {
 		//TODO: Writing a logic function that exports the current schedule as PDF file.
 	}
-	
+
 	/**
 	 * TODO: Not implemented.
 	 */
@@ -129,7 +129,7 @@ public class Controller {
 		//TODO: Writing a logic function that exports the current schedule as XLS (Excel) file (maybe).
 	}
 
-	
+
 	public PropertieHandler getPropertieHandler() {
 		return propertieHandler;
 	}
@@ -146,7 +146,7 @@ public class Controller {
 	public void loadSchedule() {
 		scheduleHandler.loadSchedule();
 	}
-	
+
 	/**
 	 * Asks the user if he wants to save his schedule - and if so, the schedule will be saved using saveSchedule function.
 	 */
