@@ -112,12 +112,15 @@ public class GUIController {
 				end.setTime(endTime);
 			}
 			int currentTime = start.getTime();
-			while (currentTime <= end.getTime()) {
+			while (currentTime < end.getTime()) {
 				Time currentT = new Time();
 				currentT.setTime(currentTime);
 				schedule.addTime(currentT);
 				currentTime += intervalTime;
 			}
+			Time lastTime = new Time();
+			lastTime.setTime(endTime);
+			schedule.addTime(lastTime);
 			this.schedule.setIntervall(intervalTime);
 			int startDayIndex = -1;
 			int endDayIndex = -1;
@@ -246,13 +249,18 @@ public class GUIController {
 			Controller.getInstance().removeSubject(subject);
 	}
 
-	public void editSubject(Subject old, String name, String shortName, String teacher, Color color) {
+	public boolean editSubject(Subject old, String name, String shortName, String teacher, Color color) {
 		Subject newSubject = new Subject();
 		newSubject.setName(name);
 		newSubject.setShortName(shortName);
 		newSubject.setTeacher(teacher);
 		newSubject.setColor(color);
-		Controller.getInstance().editSubject(old, newSubject);
+		controller.removeSubject(old);
+		if(controller.checkSubject(newSubject)) {
+			controller.addSubject(newSubject);
+			return true;
+		}
+		return false;
 	}
 
 	public static Color getForegroundColor(int red, int green, int blue) {

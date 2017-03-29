@@ -181,9 +181,11 @@ public class AddOrEditSubject extends JPanel {
 		editAction = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				guiCon.editSubject(subject, nameT.getText(), shortNameT.getText(), teacherT.getText(),
-						colorL.getBackground());
-				guiCon.displayPanel(guiCon.getManageSubjects().displaySubjects(Controller.getInstance().loadAllSubjects()));
+				if(guiCon.editSubject(subject, nameT.getText(), shortNameT.getText(), teacherT.getText(),
+						colorL.getBackground())) {
+					guiCon.displayPanel(guiCon.getManageSubjects().displaySubjects(Controller.getInstance().loadAllSubjects()));
+				}
+
 			}
 		};
 	}

@@ -133,10 +133,19 @@ public class Schedule extends JComponent {
 			currentLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 			add(currentLabel);
 		}
+		int lastLabelSize = labelHeight;
 		for(int i = 0; i < times.size() - 1; i++) {
-			JLabel currentLabel = new JLabel(times.get(i).toString());
+			JLabel currentLabel = new JLabel(times.get(i).toString() + "-" + times.get(i+1).toString());
+			currentLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			currentLabel.setName(String.valueOf(i));
-			currentLabel.setBounds(0, labelHeight * (i + 1), labelWidth, labelHeight);
+			currentLabel.setLocation(0, labelHeight * (i + 1));
+			if(i < times.size() - 2) {
+				currentLabel.setSize(labelWidth, labelHeight);
+			} else {
+				float delta = ((float) times.get(i+1).getTime() - times.get(i).getTime()) / intervall;
+				lastLabelSize = (int) (labelHeight * (((float) times.get(i+1).getTime() - times.get(i).getTime())/intervall));
+				currentLabel.setSize(labelWidth, lastLabelSize);
+			}
 			currentLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 			currentLabel.addMouseListener(new MouseListener() {
 				@Override
@@ -382,13 +391,11 @@ public class Schedule extends JComponent {
 	}
 
 	public void calculateInterval() {
-		System.out.println("intervall");
 		if(times.size() > 1) {
 			this.intervall = times.get(1).getTime() - times.get(0).getTime();
  		} else {
  			this.intervall = 0;
  		}
-		System.out.println(this.intervall);
 	}
 
 	public void setEdited(boolean isEdited) {
